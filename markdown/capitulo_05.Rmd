@@ -1,0 +1,68 @@
+# Capítulo 5: Índices para medir la diversidad biológica
+
+## Diversidad alfa
+
+### Riqueza de especies
+
+```{r}
+library(datosEcoR)
+library(BiodiversityR)
+
+data(abun_localidad)
+data(ambiente)
+
+specpool(abun_localidad, ambiente$estado_conservacion)
+```
+
+### Índices basados en dominancia
+
+```{r}
+data(abun_conservacion)
+
+D <- diversityresult(abun_conservacion, index = "Simpson", method = "each site")
+B <- diversityresult(abun_conservacion, index = "Berger", method = "each site")
+iD <- diversityresult(abun_conservacion, index = "inverseSimpson", method = "each site")
+indices_dom <- data.frame(D, iD, B)
+
+knitr::kable(indices_dom, col.names = c("Simpson", "Inverso de Simpson", "Berger"))
+```
+
+### Índices basados en equidad
+
+```{r}
+H <- diversityresult(abun_conservacion, index = "Shannon", method = "each site")
+JP <- H/log(specnumber(abun_conservacion))
+indices_equi <- data.frame(H, JP)
+
+knitr::kable(indices_equi, col.names = c("Shannon", "Pielou"))
+```
+
+## Diversidad beta
+
+```{r}
+library(betapart)
+
+incidencia <- ifelse(abun_conservacion > 0, 1, 0)
+
+betapart.core(incidencia)
+```
+
+### Beta partición en base Jaccard
+
+```{r}
+multi_jac <- beta.multi(incidencia, index.family = "jac")
+multi_jac
+
+dist_jac <- beta.pair(incidencia, index.family = "jac")
+dist_jac
+```
+
+### Beta partición en base Sørensen
+
+```{r}
+multi_sor <- beta.multi(incidencia, index.family = "sor")
+multi_sor
+
+dist_sor <- beta.pair(incidencia, index.family = "sor")
+multi_sor
+```
