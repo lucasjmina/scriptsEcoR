@@ -1,10 +1,11 @@
 ---
 title: "Estadística para estudios ecológicos: Un enfoque práctico utilizando R"
 author:
-  - Dario D. Larrea
-  - Lucas J. Mina
-  - Matias I. Dufek
-  - Gerardo N. Valle
+    - Dario D. Larrea
+    - Lucas J. Mina
+    - Matias I. Dufek
+    - Gerardo N. Valle
+    - Florencia M. Monti Areco 
 description: "Este documento contiene los ejemplos usados en el libro \"Estadística para estudios 
     ecológicos: Un enfoque práctico utilizando R\""
 output:
