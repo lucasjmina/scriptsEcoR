@@ -1,0 +1,145 @@
+# Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos
+
+## Prueba de normalidad de Shapiro-Wilk
+
+```{r}
+data(hormigas)
+
+resultado_shapiro <- shapiro.test(hormigas$Taxa_S)
+resultado_shapiro
+```
+
+```{r cuantil-cuantil, fig.cap="Gráfico Q-Q (cuantil-cuantil)"}
+qqnorm(hormigas$Taxa_S)
+qqline(hormigas$Taxa_S)
+```
+
+## Prueba de Levene
+
+```{r}
+library(car)
+
+resultado_levene <- leveneTest(Taxa_S ~ TRATAMIENTO, data = hormigas)
+resultado_levene
+```
+
+```{r homocedasticidad, fig.cap="Gráfico de residuos vs. ajustes"}
+modelo <- lm(Taxa_S ~ TRATAMIENTO, data = hormigas)
+plot(modelo, which = 1)
+```
+
+## Prueba t de Student
+
+```{r}
+grupo_1 <- hormigas$Taxa_S[hormigas$TRATAMIENTO == "ECB"]
+grupo_2 <- hormigas$Taxa_S[hormigas$TRATAMIENTO == "ECD"]
+
+resultado <- t.test(grupo_1, grupo_2)
+resultado
+```
+
+```{r boxplot-ttest, fig.cap="Diagrama de caja"}
+boxplot(hormigas$Taxa_S[hormigas$TRATAMIENTO == "ECB"], hormigas$Taxa_S[hormigas$TRATAMIENTO == "ECD"])
+```
+
+## ANOVA
+
+```{r}
+modelo_anova <- aov(Taxa_S ~ TRATAMIENTO, data = hormigas)
+summary(modelo_anova)
+
+posthoc <- TukeyHSD(modelo_anova)
+posthoc
+```
+
+```{r barra-anova, fig.cap="Diagrama de barras ANOVA"}
+barplot(tapply(hormigas$Taxa_S, hormigas$TRATAMIENTO, mean),
+        names.arg = levels(hormigas$TRATAMIENTO),
+        ylab = "Media de respuesta",
+        xlab = "Tratamiento",
+        col = "lightblue")
+```
+
+## Regresión lineal
+
+```{r}
+data(moscas)
+
+modelo <- lm(Div_Shan ~ IHH, data = moscas)
+summary(modelo)
+```
+
+```{r reg-lineal, fig.cap="Gráfico regresión lineal"}
+plot(
+  moscas$IHH, moscas$Div_Shan,
+  xlab = "Variable independiente",
+  ylab = "Variable dependiente",
+  main = "Regresión lineal"
+)
+abline(modelo, col = "red")
+```
+
+## MANOVA
+
+```{r}
+modelo_manova <- manova(cbind(Taxa_S, D1) ~ TRATAMIENTO, data = hormigas)
+summary(modelo_manova)
+```
+
+```{r bar-manova, fig.cap="Gráfico resultados MANOVA"}
+barplot(colMeans(hormigas[, c("Taxa_S", "D1")]),
+        names.arg = levels(hormigas$TRATAMIENTO),
+        ylab = "Media de variables dependientes",
+        xlab = "Variable independiente",
+        col = "lightblue")
+```
+
+## Prueba de Krustal-Wallis
+
+```{r}
+resultado_kruskal <- kruskal.test(Taxa_S ~ TRATAMIENTO, data = hormigas)
+resultado_kruskal
+
+library(dunn.test)
+
+posthoc <- dunn.test(hormigas$Taxa_S, g = hormigas$TRATAMIENTO, method = "bonferroni")
+```
+
+## Prueba de coerrelación de Spearman
+
+```{r}
+resultado_spearman <- cor.test(moscas$Riqueza, moscas$IHH, method = "spearman")
+resultado_spearman
+```
+
+## Prueba Mann-Whitney U
+
+```{r}
+ecb_vs_ecd <- subset(hormigas, TRATAMIENTO %in% c("ECB", "ECD"))
+
+resultado_mann_whitney <- wilcox.test(Taxa_S ~ TRATAMIENTO, data = ecb_vs_ecd)
+resultado_mann_whitney
+```
+
+## PERMANOVA
+
+```{r}
+library(vegan)
+
+resultado_permanova <- adonis(Taxa_S ~ TRATAMIENTO, data = hormigas, permutations = 999)
+resultado_permanova$aov.tab
+```
+
+## Modelo lineal generalizado GLM
+
+```{r}
+library(glmmTMB)
+
+modelo <- glm(Taxa_S ~ TRATAMIENTO + BOSQUE, data = hormigas, family = poisson())
+summary(modelo)
+```
+
+```{r fig.show = "hold", out.width = "50%"}
+plot(modelo, which = 1)
+plot(modelo, which = 2)
+```

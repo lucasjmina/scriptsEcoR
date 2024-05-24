@@ -1,0 +1,26 @@
+---
+title: "Estadística para estudios ecológicos: Un enfoque práctico utilizando R"
+author:
+  - Dario D. Larrea
+  - Lucas J. Mina
+  - Matias I. Dufek
+  - Gerardo N. Valle
+description: "Este documento contiene los ejemplos usados en el libro \"Estadística para estudios 
+    ecológicos: Un enfoque práctico utilizando R\""
+output:
+    bookdown::gitbook:
+        number_sections: false
+---
+
+# Prefacio {-}
+
+Aquí se encuentran los ejemplos usados en el libro.
+
+```{r setup, include = FALSE}
+library(datosEcoR)
+set.seed(19950922)
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE
+)
+```
