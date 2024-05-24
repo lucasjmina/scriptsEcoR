@@ -22,6 +22,7 @@ library(datosEcoR)
 set.seed(19950922)
 knitr::opts_chunk$set(
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  attr.output = 'style="max-height: 600px;"'
 )
 ```
