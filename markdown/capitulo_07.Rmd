@@ -1,0 +1,216 @@
+# Capítulo 7: Estudio de la estructura de la comunidad
+
+## Curvas de Whittaker
+
+```{r abu-rank, fig.cap="Gráfico rango-abundancia de todos los sitios"}
+library(BiodiversityR)
+library(ggplot2)
+library(ggrepel)
+
+# ---- Rangos de abundancia ----
+
+rank_abundancia <- rankabundance(abundancia$localidad)
+
+rankabunplot(rank_abundancia, scale = "abundance")
+```
+
+```{r, fig.show = "hide"}
+ambiente$estado_conservacion <- factor(ambiente$estado_conservacion)
+
+rank_abundancia_amb <- rankabuncomp(
+  abundancia$localidad,
+  y = ambiente,
+  factor = "estado_conservacion",
+  legend = FALSE
+)
+
+# Marcamos especies únicas
+especies_unicas <- lapply(
+  unique(levels(ambiente$estado_conservacion)),
+  function(group) {
+    setdiff(subset(rank_abundancia_amb, Grouping == group)$species,
+            subset(rank_abundancia_amb, Grouping != group)$species)
+  }
+)
+especies_unicas <- unlist(especies_unicas)
+
+rank_abundancia_amb$unique <- ifelse(
+  rank_abundancia_amb$species %in% especies_unicas, TRUE, FALSE
+)
+
+curva_whittaker <- function(x, group, scale, color, mark.unique = FALSE) {
+  if ("unique" %in% names(x)) {
+    unique_num <- nrow(
+      subset(x, Grouping == group & unique == TRUE)
+    )
+  }
+
+  label <- sprintf("%s especies únicas", unique_num)
+  xmax <- max(x[["rank"]])
+  ymax <- max(x[[scale]])
+
+  plot <- ggplot(x, aes(x = rank, y = .data[[scale]])) +
+    coord_cartesian(
+      xlim = c(0, xmax),
+      ylim = c(0, ymax)
+    ) +
+    geom_point(
+      data = subset(x, Grouping == group),
+      size = 3,
+      shape = 1,
+      color = color
+    ) +
+    scale_shape_manual(
+      name = NULL,
+      breaks = c("unique"),
+      label = c(label),
+      values = c(19)
+    ) +
+    geom_line(
+      data = subset(x, Grouping == group),
+      color = color
+    ) +
+    geom_text_repel(
+      data = subset(x, Grouping == group & labelit == TRUE),
+      aes(label = species),
+      hjust = 0,
+      nudge_x = 3,
+      size = 3
+    ) +
+    theme_classic()
+
+  if (mark.unique) {
+    plot <- plot +
+      geom_point(
+      data = subset(x, Grouping == group & unique == TRUE),
+      aes(shape = "unique"),
+      color = color,
+      size = 3,
+    ) +
+    theme(legend.position = c(.7, .5))
+  }
+  return(plot)
+}
+```
+
+```{r curvas-whitt, fig.cap = "Curvas de Whittaker para cada estado de conservación.", fig.show = "hold", out.width = "50%"}
+curva_ecb <- curva_whittaker(rank_abundancia_amb, "ECB", "abundance", "darkgreen", mark.unique = TRUE)
+curva_eci <- curva_whittaker(rank_abundancia_amb, "ECI", "abundance", "orange", mark.unique = TRUE)
+curva_ecd <- curva_whittaker(rank_abundancia_amb, "ECD", "abundance", "red", mark.unique = TRUE)
+
+curva_ecb
+curva_eci
+curva_ecd
+```
+
+```{r curva-todo, fig.cap = "Gráfico con curvas de Whittaker para cada ambiente"}
+ggplot(rank_abundancia_amb, aes(x = rank, y = abundance, color = Grouping)) +
+  geom_line() +
+  geom_point(size = 2.5) +
+  labs(color = "", shape = "") +
+  scale_color_manual(breaks = c("ECB", "ECI", "ECD"), values = c("darkgreen", "orange", "red"))+
+  theme_classic() +
+  theme(legend.position = "top")
+```
+
+## Curvas de acumulación
+
+```{r carva-acu, fig.cap = "Curva de acumulación"}
+# ---- Librerias ----
+
+library(BiodiversityR)
+library(ggplot2)
+
+data(abundancia)
+
+# ---- Curva de acumulación ----
+
+curva <- specaccum(abundancia$localidad)
+curva
+
+datos_sp <- data.frame(
+  Sitios = curva$sites,
+  Riqueza = curva$richness,
+  SD = curva$sd
+)
+
+ggplot(datos_sp, aes(x = Sitios, y = Riqueza)) +
+  geom_ribbon(aes(ymin = Riqueza - SD, ymax = Riqueza + SD), fill = "grey90") +
+  scale_x_continuous(breaks = datos_sp$Sitios) +
+  geom_line(color = "blue") +
+  theme_classic()
+```
+
+## Curvas de rarefacción
+
+```r
+# TODO: arreglar tabla de abundancia para iNEXT
+library(iNEXT)
+
+data(abundancia)
+data(incidencia_raw)
+
+inext_abundancia <- iNEXT(abundancia$conservacion, q = c(0, 1, 2), datatype = "abundance")
+```
+
+## NMDS (Escalado multi-dimensional no métrico)
+
+```{r}
+library(BiodiversityR)
+library(ggplot2)
+library(ggrepel)
+library(ggforce)
+library(concaveman)
+
+data(abundancia)
+data(ambiente)
+
+set.seed(19950922)
+
+
+resultado_nmds <- metaMDS(abundancia$localidad, distance = "bray", K = 2)
+resultado_nmds$stress
+
+dist_sitios <- vegdist(abundancia$localidad)
+anosim_sitios <- anosim(dist_sitios, ambiente$estado_conservacion, distance = "bray")
+summary(anosim_sitios)
+
+# Creamos un data.frame con los resultados
+puntos_nmds <- as.data.frame(resultado_nmds$points)
+puntos_nmds$CONSERVACION <- ambiente$estado_conservacion
+
+# Agregamos siglas para nombres de los sitios y guardamos el valor de stress
+puntos_nmds$SITIO <- abbreviate(rownames(abundancia$localidad))
+estres <- sprintf("Stress = %s", round(resultado_nmds$stress, 2))
+
+# Graficamos
+plot_nmds <- ggplot(puntos_nmds, aes(x = MDS1, y = MDS2)) +
+  ggtitle("NMDS") +
+  geom_point(aes(shape = CONSERVACION), size = 3) +
+  scale_shape_manual(
+    name = "",
+    breaks = c("ECB", "ECI", "ECD"),
+    labels = c("Conservado", "Intermedio", "Degradado"),
+    values = c(15, 16, 17)
+  ) +
+  geom_mark_hull(
+    aes(group = CONSERVACION, linetype = CONSERVACION),
+    concavity = 10,
+    radius = 0,
+    expand = 0,
+    show.legend = FALSE
+  ) +
+  scale_linetype_manual(values = c("solid", "dashed", "dotted")) +
+  annotate("text", x = +Inf, y = +Inf, label = estres, hjust = 1, vjust = 1) +
+  theme_classic()
+plot_nmds
+
+# Opcionalmente podemos añadir el nombre de los sitios
+plot_nmds +
+  geom_text_repel(
+    aes(label = SITIO),
+    box.padding = 0.5,
+    size = 3.5,
+    colour = "blue",
+  )
+```
