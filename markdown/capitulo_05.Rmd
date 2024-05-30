@@ -8,20 +8,20 @@
 library(datosEcoR)
 library(BiodiversityR)
 
-data(abun_localidad)
+data(abundancia)
 data(ambiente)
 
-specpool(abun_localidad, ambiente$estado_conservacion)
+specpool(abundancia$localidad, ambiente$estado_conservacion)
 ```
 
 ### Índices basados en dominancia
 
 ```{r}
-data(abun_conservacion)
+data(abundancia)
 
-D <- diversityresult(abun_conservacion, index = "Simpson", method = "each site")
-B <- diversityresult(abun_conservacion, index = "Berger", method = "each site")
-iD <- diversityresult(abun_conservacion, index = "inverseSimpson", method = "each site")
+D <- diversityresult(abundancia$conservacion, index = "Simpson", method = "each site")
+B <- diversityresult(abundancia$conservacion, index = "Berger", method = "each site")
+iD <- diversityresult(abundancia$conservacion, index = "inverseSimpson", method = "each site")
 indices_dom <- data.frame(D, iD, B)
 
 knitr::kable(indices_dom, col.names = c("Simpson", "Inverso de Simpson", "Berger"))
@@ -30,8 +30,8 @@ knitr::kable(indices_dom, col.names = c("Simpson", "Inverso de Simpson", "Berger
 ### Índices basados en equidad
 
 ```{r}
-H <- diversityresult(abun_conservacion, index = "Shannon", method = "each site")
-JP <- H/log(specnumber(abun_conservacion))
+H <- diversityresult(abundancia$conservacion, index = "Shannon", method = "each site")
+JP <- H/log(specnumber(abundancia$conservacion))
 indices_equi <- data.frame(H, JP)
 
 knitr::kable(indices_equi, col.names = c("Shannon", "Pielou"))
@@ -42,7 +42,7 @@ knitr::kable(indices_equi, col.names = c("Shannon", "Pielou"))
 ```{r}
 library(betapart)
 
-incidencia <- ifelse(abun_conservacion > 0, 1, 0)
+incidencia <- ifelse(abundancia$conservacion > 0, 1, 0)
 
 betapart.core(incidencia)
 ```
