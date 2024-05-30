@@ -1,0 +1,94 @@
+# Capítulo 8: Evaluación de variables ambientales
+
+## Análisis de regresión
+
+```{r modelo, fig.cap = "Modelo lineal con gráficos base"}
+data(moscas)
+
+modelo <- lm(Div_Shan ~ IHH, data = moscas)
+summary(modelo)
+
+plot(moscas$IHH, moscas$Div_Shan)
+abline(modelo, col = "red")
+```
+
+```{r modelo-ggplot, fig.cap = "Modelo líneal usando ggplot"}
+library(ggplot2)
+
+ggplot(modelo$model, aes(x = IHH, y = Div_Shan)) +
+  geom_ribbon(
+    stat = "smooth",
+    method = "lm",
+    fill = "grey90"
+  ) +
+  geom_point(size = 2, color = "blue") +
+  geom_smooth(
+    method = "lm",
+    color = "black",
+    linewidth = 1,
+    lineend = "round",
+    se = FALSE
+  ) +
+  theme_classic()
+```
+
+## Análisis de correlación
+
+```{r, fig.show = "hold", out.width = "50%", fig.cap = "Gráficos prueba de correlación"}
+data(moscas)
+
+matriz_cor <- cor(moscas)
+matriz_cor
+
+library(corrplot)
+
+corrplot(matriz_cor, method = "circle")
+corrplot(matriz_cor, method = "color")
+```
+
+```{r}
+resultado_prueba <- cor.test(moscas$IHH, moscas$Div_Shan)
+resultado_prueba
+```
+
+## Análisis de componentes principales (PCA)
+
+```{r pca, fig.cap = ""}
+data(moscas)
+
+datos_estandarizados <- scale(moscas)
+
+pca <- prcomp(datos_estandarizados, scale = TRUE)
+summary(pca)
+plot(pca)
+
+datos_proyectados <- predict(pca, newdata = datos_estandarizados)
+datos_proyectados
+```
+
+## Análisis de correspondecia canónica (CCA)
+
+TODO
+
+## Test de Mantel en R
+
+```{r}
+library(BiodiversityR)
+library(geosphere)
+
+data(abundancia)
+data(coords)
+
+dist_abundancia <- vegdist(abundancia$localidad, method = "bray")
+dist_geografica <- as.dist(distm(coords, fun = distHaversine))
+
+resultado_mantel <- mantel(dist_abundancia, dist_geografica, method = "pearson", permutations = 9999)
+resultado_mantel
+```
+
+```{r dispersion-mantel, fig.cap = "Gráfico de dispersión matrices de distancia"}
+plot(as.matrix(dist_geografica), as.matrix(dist_abundancia))
+```
+
+
+
