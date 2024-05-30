@@ -1,0 +1,31 @@
+# Capítulo 6: Otras formas de medir la biodiversidad
+
+## Diversidad taxonómica
+
+```{r}
+library(BiodiversityR)
+library(ggplot2)
+library(ggrepel)
+
+data(abundancia)
+data(taxa)
+
+dist_taxa <- taxa2dist(taxa)
+div_taxonomica <- taxondive(abundancia$localidad, dist_taxa)
+div_taxonomica
+```
+
+```{r div-taxa, fig.cap="Gráfico diversidad taxonómica"}
+div_taxonomica <- as.data.frame(
+  do.call(cbind, div_taxonomica)
+)
+
+ggplot(div_taxonomica, aes(x = Species, y = Dplus)) +
+  geom_point() +
+  ylab("Δ+") +
+  xlab("Riqueza") +
+  geom_hline(aes(yintercept = EDplus), linetype = "dotted") +
+  geom_ribbon(aes(ymax = EDplus + sd.Dplus * 2, ymin = EDplus - sd.Dplus * 2), fill = NA, color = "black") +
+  geom_text_repel(aes(label = row.names(div_taxonomica)), size = 3.5, color = "blue3") +
+  theme_classic()
+```
