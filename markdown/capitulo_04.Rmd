@@ -133,8 +133,6 @@ resultado_permanova$aov.tab
 ## Modelo lineal generalizado GLM
 
 ```{r}
-library(glmmTMB)
-
 modelo <- glm(Taxa_S ~ TRATAMIENTO + BOSQUE, data = hormigas, family = poisson())
 summary(modelo)
 ```
