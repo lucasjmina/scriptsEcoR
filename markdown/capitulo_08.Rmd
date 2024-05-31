@@ -68,7 +68,84 @@ datos_proyectados
 
 ## Análisis de correspondecia canónica (CCA)
 
-TODO
+```{r, fig.show = "hide"}
+library(BiodiversityR)
+library(ggplot2)
+
+data(abundancia)
+data(ambiente)
+
+resultado_cca <- cca(abundancia$localidad ~ ., ambiente)
+summary(resultado_cca)
+anova(resultado_cca)
+
+plot_cca <- plot(resultado_cca)
+elipses_plot_cca <- ordiellipse(resultado_cca, ambiente$estado_conservacion)
+
+# ---- Extracción de datos para graficar ----
+
+sitios <- sites.long(plot_cca)
+especies <- species.long(plot_cca)
+multiplicador <- attr(plot_cca$biplot, "arrow.mul")
+vectores <- data.frame(plot_cca$biplot * multiplicador, row.names(plot_cca$biplot))
+colnames(vectores) <- c("axis1", "axis2", "labels")
+elipses <- ordiellipse.long(elipses_plot_cca)
+nombres_ejes <- axis.long(resultado_cca)
+```
+
+```{r}
+# ---- Gráfico ----
+
+ggplot() +
+  xlab(nombres_ejes[1, "label"]) +
+  ylab(nombres_ejes[2, "label"]) +
+  scale_x_continuous(expand = c(0.2, 0.2)) +
+  geom_vline(
+    xintercept = c(0),
+    color = "grey",
+    linetype = 2,
+    linewidth = 0.3
+  ) +
+  geom_hline(
+    yintercept = c(0),
+    color = "grey",
+    linetype = 2,
+    linewidth = 0.3
+  ) +
+  geom_point(
+    data = especies,
+    aes(x = axis1, y = axis2),
+    size = 1
+  ) +
+  geom_path(
+    data = elipses,
+    aes(x = axis1, y = axis2, group = Grouping, color = Grouping)
+  ) +
+  scale_colour_manual(
+    name = "",
+    breaks = c("ECB", "ECI", "ECD"),
+    labels = c("Conservado", "Intermedio", "Deteriorado"),
+    values = c("green", "orange", "red")
+  ) +
+  geom_segment(
+    data = vectores,
+    aes(x = 0, y = 0, xend = axis1, yend = axis2),
+    linewidth = 0.4, color = "blue",
+    arrow = arrow(angle = 20, length = unit(1.5, "mm"), type = "closed")
+  ) +
+  geom_label(
+    data = vectores,
+    aes(x = axis1, y = axis2, label = labels, hjust = "outward", vjust = "outward"),
+    fill = NA,
+    label.size = NA,
+    label.padding = unit(0.2, "lines"),
+    color = "blue",
+    size = 3
+  ) +
+  theme_classic() +
+  theme(legend.position = "top")
+```
+
 
 ## Test de Mantel en R
 
