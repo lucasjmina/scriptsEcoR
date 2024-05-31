@@ -143,14 +143,27 @@ ggplot(datos_sp, aes(x = Sitios, y = Riqueza)) +
 
 ## Curvas de rarefacción
 
-```r
-# TODO: arreglar tabla de abundancia para iNEXT
+```{r}
 library(iNEXT)
 
 data(abundancia)
 data(incidencia_raw)
 
-inext_abundancia <- iNEXT(abundancia$conservacion, q = c(0, 1, 2), datatype = "abundance")
+inext_abundancia <- iNEXT(abundancia$sp_by_ec, q = c(0, 1, 2), datatype = "abundance")
+inext_abundancia
+```
+```{r, fig.cap = "Curvas de rarefacción por ensamble (estado de conservación)"}
+plot_ec <- ggiNEXT(inext_abundancia, type = 1, facet.var = "Assemblage") +
+  theme_classic(base_size = 10) +
+  theme(legend.position = "bottom")
+plot_ec
+```
+
+```{r, fig.cap = "Curvas de rarefacción por orden q"}
+plot_orderq <- ggiNEXT(inext_abundancia, type = 1, facet.var = "Order.q") +
+  theme_classic(base_size = 10) +
+  theme(legend.position = "bottom")
+plot_orderq
 ```
 
 ## NMDS (Escalado multi-dimensional no métrico)
