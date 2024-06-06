@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 5: Índices para medir la diversidad biológica | Estadística para estudios ecológicos: Un enfoque práctico utilizando R</title>
+  <meta name="description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 5: Índices para medir la diversidad biológica | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5: Índices para medir la diversidad biológica | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  
+  <meta name="twitter:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+<meta name="author" content="Dario D. Larrea" />
+<meta name="author" content="Lucas J. Mina" />
+<meta name="author" content="Matias I. Dufek" />
+<meta name="author" content="Gerardo N. Valle" />
+<meta name="author" content="Florencia M. Monti Areco" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"/>
+<link rel="next" href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><i class="fa fa-check"></i>Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-normalidad-de-shapiro-wilk"><i class="fa fa-check"></i>Prueba de normalidad de Shapiro-Wilk</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-levene"><i class="fa fa-check"></i>Prueba de Levene</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-t-de-student"><i class="fa fa-check"></i>Prueba t de Student</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#anova"><i class="fa fa-check"></i>ANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#regresión-lineal"><i class="fa fa-check"></i>Regresión lineal</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#manova"><i class="fa fa-check"></i>MANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-krustal-wallis"><i class="fa fa-check"></i>Prueba de Krustal-Wallis</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-coerrelación-de-spearman"><i class="fa fa-check"></i>Prueba de coerrelación de Spearman</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-mann-whitney-u"><i class="fa fa-check"></i>Prueba Mann-Whitney U</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#permanova"><i class="fa fa-check"></i>PERMANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#modelo-lineal-generalizado-glm"><i class="fa fa-check"></i>Modelo lineal generalizado GLM</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><i class="fa fa-check"></i>Capítulo 5: Índices para medir la diversidad biológica</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-alfa"><i class="fa fa-check"></i>Diversidad alfa</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#riqueza-de-especies"><i class="fa fa-check"></i>Riqueza de especies</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-dominancia"><i class="fa fa-check"></i>Índices basados en dominancia</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-equidad"><i class="fa fa-check"></i>Índices basados en equidad</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-beta"><i class="fa fa-check"></i>Diversidad beta</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-jaccard"><i class="fa fa-check"></i>Beta partición en base Jaccard</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-sørensen"><i class="fa fa-check"></i>Beta partición en base Sørensen</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><i class="fa fa-check"></i>Capítulo 6: Otras formas de medir la biodiversidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html#diversidad-taxonómica"><i class="fa fa-check"></i>Diversidad taxonómica</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><i class="fa fa-check"></i>Capítulo 7: Estudio de la estructura de la comunidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-whittaker"><i class="fa fa-check"></i>Curvas de Whittaker</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-acumulación"><i class="fa fa-check"></i>Curvas de acumulación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-rarefacción"><i class="fa fa-check"></i>Curvas de rarefacción</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#nmds-escalado-multi-dimensional-no-métrico"><i class="fa fa-check"></i>NMDS (Escalado multi-dimensional no métrico)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html"><i class="fa fa-check"></i>Capítulo 8: Evaluación de variables ambientales</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-regresión"><i class="fa fa-check"></i>Análisis de regresión</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correlación"><i class="fa fa-check"></i>Análisis de correlación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-componentes-principales-pca"><i class="fa fa-check"></i>Análisis de componentes principales (PCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correspondecia-canónica-cca"><i class="fa fa-check"></i>Análisis de correspondecia canónica (CCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#test-de-mantel-en-r"><i class="fa fa-check"></i>Test de Mantel en R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html"><i class="fa fa-check"></i>Capítulo 9: Modelado nicho ecológico</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#descarga-de-datos"><i class="fa fa-check"></i>Descarga de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#preparación-de-datos"><i class="fa fa-check"></i>Preparación de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#construcción-de-elipsioides"><i class="fa fa-check"></i>Construcción de elipsioides</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#proyección-del-modelo"><i class="fa fa-check"></i>Proyección del modelo</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#gráficos"><i class="fa fa-check"></i>Gráficos</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Estadística para estudios ecológicos: Un enfoque práctico utilizando R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="capítulo-5-índices-para-medir-la-diversidad-biológica" class="section level1 hasAnchor">
+<h1>Capítulo 5: Índices para medir la diversidad biológica<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#capítulo-5-índices-para-medir-la-diversidad-biológica" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="diversidad-alfa" class="section level2 hasAnchor">
+<h2>Diversidad alfa<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-alfa" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="riqueza-de-especies" class="section level3 hasAnchor">
+<h3>Riqueza de especies<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#riqueza-de-especies" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-1" tabindex="-1"></a><span class="fu">library</span>(datosEcoR)</span>
+<span id="cb34-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-2" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb34-3"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-3" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-4" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb34-5"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-5" tabindex="-1"></a><span class="fu">data</span>(ambiente)</span>
+<span id="cb34-6"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-6" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb34-7" tabindex="-1"></a><span class="fu">specpool</span>(abundancia<span class="sc">$</span>localidad, ambiente<span class="sc">$</span>estado_conservacion)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>##     Species      chao  chao.se     jack1 jack1.se     jack2     boot   boot.se
+## ECB      78 138.08889 24.05296 112.66667 25.51688 127.50000 93.96296 12.105957
+## ECD      53  96.75758 20.47861  78.33333 18.31818  89.16667 64.66667  8.576454
+## ECI      57 110.48148 25.93010  82.33333 19.27578  93.50000 68.59259  9.373956
+##     n
+## ECB 3
+## ECD 3
+## ECI 3</code></pre>
+</div>
+<div id="índices-basados-en-dominancia" class="section level3 hasAnchor">
+<h3>Índices basados en dominancia<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-dominancia" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-1" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb36-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-3" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">diversityresult</span>(abundancia<span class="sc">$</span>conservacion, <span class="at">index =</span> <span class="st">&quot;Simpson&quot;</span>, <span class="at">method =</span> <span class="st">&quot;each site&quot;</span>)</span>
+<span id="cb36-4"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-4" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">diversityresult</span>(abundancia<span class="sc">$</span>conservacion, <span class="at">index =</span> <span class="st">&quot;Berger&quot;</span>, <span class="at">method =</span> <span class="st">&quot;each site&quot;</span>)</span>
+<span id="cb36-5"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-5" tabindex="-1"></a>iD <span class="ot">&lt;-</span> <span class="fu">diversityresult</span>(abundancia<span class="sc">$</span>conservacion, <span class="at">index =</span> <span class="st">&quot;inverseSimpson&quot;</span>, <span class="at">method =</span> <span class="st">&quot;each site&quot;</span>)</span>
+<span id="cb36-6"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-6" tabindex="-1"></a>indices_dom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(D, iD, B)</span>
+<span id="cb36-7"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-7" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb36-8" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(indices_dom, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Simpson&quot;</span>, <span class="st">&quot;Inverso de Simpson&quot;</span>, <span class="st">&quot;Berger&quot;</span>))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Simpson</th>
+<th align="right">Inverso de Simpson</th>
+<th align="right">Berger</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ECB</td>
+<td align="right">0.93105021</td>
+<td align="right">14.5033077</td>
+<td align="right">0.12946191</td>
+</tr>
+<tr class="even">
+<td align="left">ECI</td>
+<td align="right">0.87280776</td>
+<td align="right">7.8621150</td>
+<td align="right">0.27067995</td>
+</tr>
+<tr class="odd">
+<td align="left">ECD</td>
+<td align="right">0.83436931</td>
+<td align="right">6.0375284</td>
+<td align="right">0.34324554</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="índices-basados-en-equidad" class="section level3 hasAnchor">
+<h3>Índices basados en equidad<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-equidad" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb37-1" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diversityresult</span>(abundancia<span class="sc">$</span>conservacion, <span class="at">index =</span> <span class="st">&quot;Shannon&quot;</span>, <span class="at">method =</span> <span class="st">&quot;each site&quot;</span>)</span>
+<span id="cb37-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb37-2" tabindex="-1"></a>JP <span class="ot">&lt;-</span> H<span class="sc">/</span><span class="fu">log</span>(<span class="fu">specnumber</span>(abundancia<span class="sc">$</span>conservacion))</span>
+<span id="cb37-3"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb37-3" tabindex="-1"></a>indices_equi <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(H, JP)</span>
+<span id="cb37-4"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb37-4" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb37-5" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(indices_equi, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Shannon&quot;</span>, <span class="st">&quot;Pielou&quot;</span>))</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Shannon</th>
+<th align="right">Pielou</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ECB</td>
+<td align="right">3.0779495</td>
+<td align="right">0.70648501</td>
+</tr>
+<tr class="even">
+<td align="left">ECI</td>
+<td align="right">2.6244421</td>
+<td align="right">0.64912413</td>
+</tr>
+<tr class="odd">
+<td align="left">ECD</td>
+<td align="right">2.5077268</td>
+<td align="right">0.63162278</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="diversidad-beta" class="section level2 hasAnchor">
+<h2>Diversidad beta<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-beta" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb38-1" tabindex="-1"></a><span class="fu">library</span>(betapart)</span>
+<span id="cb38-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb38-3" tabindex="-1"></a>incidencia <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(abundancia<span class="sc">$</span>conservacion <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb38-4"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb38-4" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb38-5" tabindex="-1"></a><span class="fu">betapart.core</span>(incidencia)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## $data
+##     Acanthoponera mucronata Acromyrmex sp1 Acromyrmex sp2 Acromyrmex sp3
+## ECB                       1              1              1              1
+## ECI                       1              1              0              0
+## ECD                       0              1              0              0
+##     Anochetus cf. neglectus Anochetus neglectus Apterostigma pilosum
+## ECB                       1                   1                    1
+## ECI                       0                   1                    1
+## ECD                       0                   0                    0
+##     Brachymyrmex sp1 Camponotus blandus Camponotus cf. mus
+## ECB                1                  1                  1
+## ECI                1                  0                  1
+## ECD                1                  0                  1
+##     Camponotus cf. substitutus Camponotus cordiceps  Camponotus punctulatus
+## ECB                          1                     1                      1
+## ECI                          1                     0                      0
+## ECD                          0                     0                      0
+##     Camponotus rufipes Camponotus sanctaefidei Camponotus sericeiventris
+## ECB                  1                       1                         1
+## ECI                  0                       0                         0
+## ECD                  1                       1                         0
+##     Camponotus sp1 Camponotus sp2 Camponotus sp3 Camponotus sp5
+## ECB              1              1              1              1
+## ECI              1              0              0              0
+## ECD              1              0              1              0
+##     Cephalotes clypeatus Cephalotes incertus Cephalotes minutus
+## ECB                    1                   1                  1
+## ECI                    0                   0                  0
+## ECD                    0                   0                  0
+##     Cephalotes pilosus Cephalotes sp1 Cephalotes sp2 Cephalotes sp3
+## ECB                  1              1              1              1
+## ECI                  0              1              1              0
+## ECD                  0              1              0              0
+##     Crematogaster sp1 Cyphomyrmex rimosus Cyphomyrmex sp1 Dolichoderus sp1
+## ECB                 1                   1               1                1
+## ECI                 1                   1               1                0
+## ECD                 1                   1               1                1
+##     Dorymyrmex thoracicus Eciton vagans Ectatomma edentatum Ectatomma sp1
+## ECB                     1             1                   1             1
+## ECI                     0             0                   1             0
+## ECD                     0             0                   1             0
+##     Gnamptogenys moelleri Gnamptogenys sp1 Gnamptogenys striatula
+## ECB                     1                1                      1
+## ECI                     1                0                      0
+## ECD                     1                0                      0
+##     Hypoponera sp1 Hypoponera sp2 Hypoponera sp3 Hypoponera sp4
+## ECB              1              1              1              1
+## ECI              1              1              1              1
+## ECD              1              1              0              1
+##     Labidus praedator Linepithema humile Linepithema sp1 Neoponera cf. villosa
+## ECB                 1                  1               1                     1
+## ECI                 1                  1               1                     0
+## ECD                 0                  1               1                     1
+##     Nesomyrmex spininodis Nylanderia cf. silvestrii Nylanderia fulva
+## ECB                     1                         1                1
+## ECI                     1                         0                1
+## ECD                     1                         0                1
+##     Nylanderia silvestrii Nylanderia sp3 Octostruma balzani
+## ECB                     1              1                  1
+## ECI                     0              0                  1
+## ECD                     1              0                  1
+##     Odontomachus chelifer Odontomachus haematodus Pheidole cf. capillata
+## ECB                     1                       1                      1
+## ECI                     0                       0                      0
+## ECD                     0                       0                      0
+##     Pheidole cf. synarmata Pheidole radoszkowskii Pheidole sp1 Pheidole sp2
+## ECB                      1                      1            1            1
+## ECI                      0                      1            1            1
+## ECD                      0                      0            1            1
+##     Pheidole sp3 Prionopelta punctulata Procryptocerus cf. goeldii
+## ECB            1                      1                          1
+## ECI            0                      1                          0
+## ECD            1                      0                          0
+##     Procryptocerus goeldii Pseudomyrmex cf. gracilis Pseudomyrmex gracilis
+## ECB                      1                         1                     1
+## ECI                      0                         1                     0
+## ECD                      0                         1                     0
+##     Pseudomyrmex pallidus Pseudomyrmex phyllophilus Pseudomyrmex sp1
+## ECB                     1                         1                1
+## ECI                     0                         0                1
+## ECD                     0                         0                1
+##     Pseudomyrmex sp2 Pseudomyrmex sp3 Solenopsis sp1 Solenopsis sp2
+## ECB                1                1              1              1
+## ECI                1                1              1              1
+## ECD                0                0              1              1
+##     Strumigenys cf. eggersi Strumigenys cf. silvestrii Strumigenys eggersi
+## ECB                       1                          1                   1
+## ECI                       0                          0                   1
+## ECD                       0                          0                   1
+##     Strumigenys louisianae Trachymyrmex sp1 Wasmannia auropunctata
+## ECB                      1                1                      1
+## ECI                      0                1                      1
+## ECD                      0                0                      1
+##     Camponotus sp10 Camponotus sp11 Camponotus sp12 Camponotus sp4
+## ECB               0               0               0              0
+## ECI               0               0               0              0
+## ECD               1               1               1              1
+##     Camponotus sp8 Camponotus sp9 Camponotus substitutus Crematogaster sp2
+## ECB              0              0                      0                 0
+## ECI              0              0                      0                 1
+## ECD              1              1                      1                 1
+##     Crematogaster sp3 Dolichoderus bispinosus Dorymyrmex sp3 Ectatomma brunneum
+## ECB                 0                       0              0                  0
+## ECI                 0                       0              0                  1
+## ECD                 1                       1              1                  1
+##     Ectatomma opaciventre Gnamptogenys sulcata Hypoponera trigona
+## ECB                     0                    0                  0
+## ECI                     0                    0                  0
+## ECD                     1                    1                  1
+##     Linepithema sp2 Myrmelachista sp1 Procryptocerus hylaeus
+## ECB               0                 0                      0
+## ECI               0                 0                      0
+## ECD               1                 1                      1
+##     Pseudomyrmex cf. denticollis Rogeria scobinata Acromyrmex cf. lundii
+## ECB                            0                 0                     0
+## ECI                            0                 1                     1
+## ECD                            1                 1                     0
+##     Brachymyrmex sp2 Cephalotes cf. incertus Cephalotes sp4 Dorymyrmex sp1
+## ECB                0                       0              0              0
+## ECI                1                       1              1              1
+## ECD                0                       0              0              0
+##     Eciton sp1 Hypoponera foreli Labidus sp1 Leptogenys pusilla
+## ECB          0                 0           0                  0
+## ECI          1                 1           1                  1
+## ECD          0                 0           0                  0
+##     Megalomyrmex silvestrii Nesomyrmex vicinus Pheidole sp4 Platythyrea exigua
+## ECB                       0                  0            0                  0
+## ECI                       1                  1            1                  1
+## ECD                       0                  0            0                  0
+##     Strumigenys dyseides Strumigenys elongata Strumigenys lilloana
+## ECB                    0                    0                    0
+## ECI                    1                    1                    1
+## ECD                    0                    0                    0
+## 
+## $sumSi
+## [1] 188
+## 
+## $St
+## [1] 114
+## 
+## $a
+## [1] 74
+## 
+## $shared
+##     ECB ECI ECD
+## ECB  78  38  33
+## ECI  38  57  29
+## ECD  33  29  53
+## 
+## $not.shared
+##     ECB ECI ECD
+## ECB   0  19  20
+## ECI  40   0  24
+## ECD  45  28   0
+## 
+## $sum.not.shared
+##     ECB ECI ECD
+## ECB   0  59  65
+## ECI  59   0  52
+## ECD  65  52   0
+## 
+## $max.not.shared
+##     ECB ECI ECD
+## ECB   0  40  45
+## ECI  40   0  28
+## ECD  45  28   0
+## 
+## $min.not.shared
+##     ECB ECI ECD
+## ECB   0  19  20
+## ECI  19   0  24
+## ECD  20  24   0
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;betapart&quot;</code></pre>
+<div id="beta-partición-en-base-jaccard" class="section level3 hasAnchor">
+<h3>Beta partición en base Jaccard<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-jaccard" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb40-1" tabindex="-1"></a>multi_jac <span class="ot">&lt;-</span> <span class="fu">beta.multi</span>(incidencia, <span class="at">index.family =</span> <span class="st">&quot;jac&quot;</span>)</span>
+<span id="cb40-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb40-2" tabindex="-1"></a>multi_jac</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## $beta.JTU
+## [1] 0.63
+## 
+## $beta.JNE
+## [1] 0.074
+## 
+## $beta.JAC
+## [1] 0.704</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb42-1" tabindex="-1"></a>dist_jac <span class="ot">&lt;-</span> <span class="fu">beta.pair</span>(incidencia, <span class="at">index.family =</span> <span class="st">&quot;jac&quot;</span>)</span>
+<span id="cb42-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb42-2" tabindex="-1"></a>dist_jac</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## $beta.jtu
+##            ECB        ECI
+## ECI 0.50000000           
+## ECD 0.54794521 0.62337662
+## 
+## $beta.jne
+##             ECB         ECI
+## ECI 0.108247423            
+## ECD 0.115320101 0.018598685
+## 
+## $beta.jac
+##            ECB        ECI
+## ECI 0.60824742           
+## ECD 0.66326531 0.64197531</code></pre>
+</div>
+<div id="beta-partición-en-base-sørensen" class="section level3 hasAnchor">
+<h3>Beta partición en base Sørensen<a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-sørensen" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb44-1" tabindex="-1"></a>multi_sor <span class="ot">&lt;-</span> <span class="fu">beta.multi</span>(incidencia, <span class="at">index.family =</span> <span class="st">&quot;sor&quot;</span>)</span>
+<span id="cb44-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb44-2" tabindex="-1"></a>multi_sor</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## $beta.SIM
+## [1] 0.45985401
+## 
+## $beta.SNE
+## [1] 0.083355862
+## 
+## $beta.SOR
+## [1] 0.54320988</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb46-1" tabindex="-1"></a>dist_sor <span class="ot">&lt;-</span> <span class="fu">beta.pair</span>(incidencia, <span class="at">index.family =</span> <span class="st">&quot;sor&quot;</span>)</span>
+<span id="cb46-2"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#cb46-2" tabindex="-1"></a>multi_sor</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## $beta.SIM
+## [1] 0.45985401
+## 
+## $beta.SNE
+## [1] 0.083355862
+## 
+## $beta.SOR
+## [1] 0.54320988</code></pre>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

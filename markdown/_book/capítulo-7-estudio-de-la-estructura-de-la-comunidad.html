@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 7: Estudio de la estructura de la comunidad | Estadística para estudios ecológicos: Un enfoque práctico utilizando R</title>
+  <meta name="description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 7: Estudio de la estructura de la comunidad | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 7: Estudio de la estructura de la comunidad | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  
+  <meta name="twitter:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+<meta name="author" content="Dario D. Larrea" />
+<meta name="author" content="Lucas J. Mina" />
+<meta name="author" content="Matias I. Dufek" />
+<meta name="author" content="Gerardo N. Valle" />
+<meta name="author" content="Florencia M. Monti Areco" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"/>
+<link rel="next" href="capítulo-8-evaluación-de-variables-ambientales.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><i class="fa fa-check"></i>Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-normalidad-de-shapiro-wilk"><i class="fa fa-check"></i>Prueba de normalidad de Shapiro-Wilk</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-levene"><i class="fa fa-check"></i>Prueba de Levene</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-t-de-student"><i class="fa fa-check"></i>Prueba t de Student</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#anova"><i class="fa fa-check"></i>ANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#regresión-lineal"><i class="fa fa-check"></i>Regresión lineal</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#manova"><i class="fa fa-check"></i>MANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-krustal-wallis"><i class="fa fa-check"></i>Prueba de Krustal-Wallis</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-coerrelación-de-spearman"><i class="fa fa-check"></i>Prueba de coerrelación de Spearman</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-mann-whitney-u"><i class="fa fa-check"></i>Prueba Mann-Whitney U</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#permanova"><i class="fa fa-check"></i>PERMANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#modelo-lineal-generalizado-glm"><i class="fa fa-check"></i>Modelo lineal generalizado GLM</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><i class="fa fa-check"></i>Capítulo 5: Índices para medir la diversidad biológica</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-alfa"><i class="fa fa-check"></i>Diversidad alfa</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#riqueza-de-especies"><i class="fa fa-check"></i>Riqueza de especies</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-dominancia"><i class="fa fa-check"></i>Índices basados en dominancia</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-equidad"><i class="fa fa-check"></i>Índices basados en equidad</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-beta"><i class="fa fa-check"></i>Diversidad beta</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-jaccard"><i class="fa fa-check"></i>Beta partición en base Jaccard</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-sørensen"><i class="fa fa-check"></i>Beta partición en base Sørensen</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><i class="fa fa-check"></i>Capítulo 6: Otras formas de medir la biodiversidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html#diversidad-taxonómica"><i class="fa fa-check"></i>Diversidad taxonómica</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><i class="fa fa-check"></i>Capítulo 7: Estudio de la estructura de la comunidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-whittaker"><i class="fa fa-check"></i>Curvas de Whittaker</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-acumulación"><i class="fa fa-check"></i>Curvas de acumulación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-rarefacción"><i class="fa fa-check"></i>Curvas de rarefacción</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#nmds-escalado-multi-dimensional-no-métrico"><i class="fa fa-check"></i>NMDS (Escalado multi-dimensional no métrico)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html"><i class="fa fa-check"></i>Capítulo 8: Evaluación de variables ambientales</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-regresión"><i class="fa fa-check"></i>Análisis de regresión</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correlación"><i class="fa fa-check"></i>Análisis de correlación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-componentes-principales-pca"><i class="fa fa-check"></i>Análisis de componentes principales (PCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correspondecia-canónica-cca"><i class="fa fa-check"></i>Análisis de correspondecia canónica (CCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#test-de-mantel-en-r"><i class="fa fa-check"></i>Test de Mantel en R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html"><i class="fa fa-check"></i>Capítulo 9: Modelado nicho ecológico</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#descarga-de-datos"><i class="fa fa-check"></i>Descarga de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#preparación-de-datos"><i class="fa fa-check"></i>Preparación de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#construcción-de-elipsioides"><i class="fa fa-check"></i>Construcción de elipsioides</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#proyección-del-modelo"><i class="fa fa-check"></i>Proyección del modelo</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#gráficos"><i class="fa fa-check"></i>Gráficos</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Estadística para estudios ecológicos: Un enfoque práctico utilizando R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="capítulo-7-estudio-de-la-estructura-de-la-comunidad" class="section level1 hasAnchor">
+<h1>Capítulo 7: Estudio de la estructura de la comunidad<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#capítulo-7-estudio-de-la-estructura-de-la-comunidad" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="curvas-de-whittaker" class="section level2 hasAnchor">
+<h2>Curvas de Whittaker<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-whittaker" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-1" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb51-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb51-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-3" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb51-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-4" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-5" tabindex="-1"></a><span class="co"># ---- Rangos de abundancia ----</span></span>
+<span id="cb51-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-6" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-7" tabindex="-1"></a>rank_abundancia <span class="ot">&lt;-</span> <span class="fu">rankabundance</span>(abundancia<span class="sc">$</span>localidad)</span>
+<span id="cb51-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-8" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb51-9" tabindex="-1"></a><span class="fu">rankabunplot</span>(rank_abundancia, <span class="at">scale =</span> <span class="st">&quot;abundance&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:abu-rank"></span>
+<img src="_main_files/figure-html/abu-rank-1.png" alt="Gráfico rango-abundancia de todos los sitios" width="672" />
+<p class="caption">
+Figura 8: Gráfico rango-abundancia de todos los sitios
+</p>
+</div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-1" tabindex="-1"></a>ambiente<span class="sc">$</span>estado_conservacion <span class="ot">&lt;-</span> <span class="fu">factor</span>(ambiente<span class="sc">$</span>estado_conservacion)</span>
+<span id="cb52-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-2" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-3" tabindex="-1"></a>rank_abundancia_amb <span class="ot">&lt;-</span> <span class="fu">rankabuncomp</span>(</span>
+<span id="cb52-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-4" tabindex="-1"></a>  abundancia<span class="sc">$</span>localidad,</span>
+<span id="cb52-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-5" tabindex="-1"></a>  <span class="at">y =</span> ambiente,</span>
+<span id="cb52-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-6" tabindex="-1"></a>  <span class="at">factor =</span> <span class="st">&quot;estado_conservacion&quot;</span>,</span>
+<span id="cb52-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-7" tabindex="-1"></a>  <span class="at">legend =</span> <span class="cn">FALSE</span></span>
+<span id="cb52-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb52-8" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-1" tabindex="-1"></a><span class="co"># Marcamos especies únicas</span></span>
+<span id="cb53-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-2" tabindex="-1"></a>especies_unicas <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb53-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-3" tabindex="-1"></a>  <span class="fu">unique</span>(<span class="fu">levels</span>(ambiente<span class="sc">$</span>estado_conservacion)),</span>
+<span id="cb53-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-4" tabindex="-1"></a>  <span class="cf">function</span>(group) {</span>
+<span id="cb53-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-5" tabindex="-1"></a>    <span class="fu">setdiff</span>(<span class="fu">subset</span>(rank_abundancia_amb, Grouping <span class="sc">==</span> group)<span class="sc">$</span>species,</span>
+<span id="cb53-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-6" tabindex="-1"></a>            <span class="fu">subset</span>(rank_abundancia_amb, Grouping <span class="sc">!=</span> group)<span class="sc">$</span>species)</span>
+<span id="cb53-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-7" tabindex="-1"></a>  }</span>
+<span id="cb53-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-8" tabindex="-1"></a>)</span>
+<span id="cb53-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-9" tabindex="-1"></a>especies_unicas <span class="ot">&lt;-</span> <span class="fu">unlist</span>(especies_unicas)</span>
+<span id="cb53-10"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-10" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-11" tabindex="-1"></a>rank_abundancia_amb<span class="sc">$</span>unique <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb53-12"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-12" tabindex="-1"></a>  rank_abundancia_amb<span class="sc">$</span>species <span class="sc">%in%</span> especies_unicas, <span class="cn">TRUE</span>, <span class="cn">FALSE</span></span>
+<span id="cb53-13"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-13" tabindex="-1"></a>)</span>
+<span id="cb53-14"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-14" tabindex="-1"></a></span>
+<span id="cb53-15"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-15" tabindex="-1"></a>curva_whittaker <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group, scale, color, <span class="at">mark.unique =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb53-16"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-16" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">&quot;unique&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(x)) {</span>
+<span id="cb53-17"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-17" tabindex="-1"></a>    unique_num <span class="ot">&lt;-</span> <span class="fu">nrow</span>(</span>
+<span id="cb53-18"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-18" tabindex="-1"></a>      <span class="fu">subset</span>(x, Grouping <span class="sc">==</span> group <span class="sc">&amp;</span> unique <span class="sc">==</span> <span class="cn">TRUE</span>)</span>
+<span id="cb53-19"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-19" tabindex="-1"></a>    )</span>
+<span id="cb53-20"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-20" tabindex="-1"></a>  }</span>
+<span id="cb53-21"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-21" tabindex="-1"></a></span>
+<span id="cb53-22"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-22" tabindex="-1"></a>  label <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;%s especies únicas&quot;</span>, unique_num)</span>
+<span id="cb53-23"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-23" tabindex="-1"></a>  xmax <span class="ot">&lt;-</span> <span class="fu">max</span>(x[[<span class="st">&quot;rank&quot;</span>]])</span>
+<span id="cb53-24"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-24" tabindex="-1"></a>  ymax <span class="ot">&lt;-</span> <span class="fu">max</span>(x[[scale]])</span>
+<span id="cb53-25"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-25" tabindex="-1"></a></span>
+<span id="cb53-26"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-26" tabindex="-1"></a>  plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(x, <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> .data[[scale]])) <span class="sc">+</span></span>
+<span id="cb53-27"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-27" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(</span>
+<span id="cb53-28"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-28" tabindex="-1"></a>      <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, xmax),</span>
+<span id="cb53-29"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-29" tabindex="-1"></a>      <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, ymax)</span>
+<span id="cb53-30"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-30" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-31"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-31" tabindex="-1"></a>    <span class="fu">geom_point</span>(</span>
+<span id="cb53-32"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-32" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">subset</span>(x, Grouping <span class="sc">==</span> group),</span>
+<span id="cb53-33"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-33" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb53-34"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-34" tabindex="-1"></a>      <span class="at">shape =</span> <span class="dv">1</span>,</span>
+<span id="cb53-35"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-35" tabindex="-1"></a>      <span class="at">color =</span> color</span>
+<span id="cb53-36"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-36" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-37"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-37" tabindex="-1"></a>    <span class="fu">scale_shape_manual</span>(</span>
+<span id="cb53-38"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-38" tabindex="-1"></a>      <span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb53-39"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-39" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">&quot;unique&quot;</span>),</span>
+<span id="cb53-40"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-40" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">c</span>(label),</span>
+<span id="cb53-41"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-41" tabindex="-1"></a>      <span class="at">values =</span> <span class="fu">c</span>(<span class="dv">19</span>)</span>
+<span id="cb53-42"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-42" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-43"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-43" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb53-44"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-44" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">subset</span>(x, Grouping <span class="sc">==</span> group),</span>
+<span id="cb53-45"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-45" tabindex="-1"></a>      <span class="at">color =</span> color</span>
+<span id="cb53-46"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-46" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-47"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-47" tabindex="-1"></a>    <span class="fu">geom_text_repel</span>(</span>
+<span id="cb53-48"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-48" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">subset</span>(x, Grouping <span class="sc">==</span> group <span class="sc">&amp;</span> labelit <span class="sc">==</span> <span class="cn">TRUE</span>),</span>
+<span id="cb53-49"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-49" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">label =</span> species),</span>
+<span id="cb53-50"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-50" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb53-51"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-51" tabindex="-1"></a>      <span class="at">nudge_x =</span> <span class="dv">3</span>,</span>
+<span id="cb53-52"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-52" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb53-53"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-53" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-54"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-54" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span>
+<span id="cb53-55"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-55" tabindex="-1"></a></span>
+<span id="cb53-56"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-56" tabindex="-1"></a>  <span class="cf">if</span> (mark.unique) {</span>
+<span id="cb53-57"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-57" tabindex="-1"></a>    plot <span class="ot">&lt;-</span> plot <span class="sc">+</span></span>
+<span id="cb53-58"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-58" tabindex="-1"></a>      <span class="fu">geom_point</span>(</span>
+<span id="cb53-59"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-59" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">subset</span>(x, Grouping <span class="sc">==</span> group <span class="sc">&amp;</span> unique <span class="sc">==</span> <span class="cn">TRUE</span>),</span>
+<span id="cb53-60"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-60" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">shape =</span> <span class="st">&quot;unique&quot;</span>),</span>
+<span id="cb53-61"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-61" tabindex="-1"></a>      <span class="at">color =</span> color,</span>
+<span id="cb53-62"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-62" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb53-63"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-63" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb53-64"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-64" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">7</span>, .<span class="dv">5</span>))</span>
+<span id="cb53-65"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-65" tabindex="-1"></a>  }</span>
+<span id="cb53-66"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-66" tabindex="-1"></a>  <span class="fu">return</span>(plot)</span>
+<span id="cb53-67"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb53-67" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-1" tabindex="-1"></a>curva_ecb <span class="ot">&lt;-</span> <span class="fu">curva_whittaker</span>(rank_abundancia_amb, <span class="st">&quot;ECB&quot;</span>, <span class="st">&quot;abundance&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>, <span class="at">mark.unique =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-2" tabindex="-1"></a>curva_eci <span class="ot">&lt;-</span> <span class="fu">curva_whittaker</span>(rank_abundancia_amb, <span class="st">&quot;ECI&quot;</span>, <span class="st">&quot;abundance&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="at">mark.unique =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-3" tabindex="-1"></a>curva_ecd <span class="ot">&lt;-</span> <span class="fu">curva_whittaker</span>(rank_abundancia_amb, <span class="st">&quot;ECD&quot;</span>, <span class="st">&quot;abundance&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="at">mark.unique =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-5" tabindex="-1"></a>curva_ecb</span>
+<span id="cb54-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-6" tabindex="-1"></a>curva_eci</span>
+<span id="cb54-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb54-7" tabindex="-1"></a>curva_ecd</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:curvas-whitt"></span>
+<img src="_main_files/figure-html/curvas-whitt-1.png" alt="Curvas de Whittaker para cada estado de conservación." width="50%" /><img src="_main_files/figure-html/curvas-whitt-2.png" alt="Curvas de Whittaker para cada estado de conservación." width="50%" /><img src="_main_files/figure-html/curvas-whitt-3.png" alt="Curvas de Whittaker para cada estado de conservación." width="50%" />
+<p class="caption">
+Figura 9: Curvas de Whittaker para cada estado de conservación.
+</p>
+</div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-1" tabindex="-1"></a><span class="fu">ggplot</span>(rank_abundancia_amb, <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> abundance, <span class="at">color =</span> Grouping)) <span class="sc">+</span></span>
+<span id="cb55-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-2" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb55-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb55-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-4" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb55-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-5" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">&quot;ECB&quot;</span>, <span class="st">&quot;ECI&quot;</span>, <span class="st">&quot;ECD&quot;</span>), <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;darkgreen&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;red&quot;</span>))<span class="sc">+</span></span>
+<span id="cb55-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-6" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb55-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb55-7" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:curva-todo"></span>
+<img src="_main_files/figure-html/curva-todo-1.png" alt="Gráfico con curvas de Whittaker para cada ambiente" width="672" />
+<p class="caption">
+Figura 10: Gráfico con curvas de Whittaker para cada ambiente
+</p>
+</div>
+</div>
+<div id="curvas-de-acumulación" class="section level2 hasAnchor">
+<h2>Curvas de acumulación<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-acumulación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-1" tabindex="-1"></a><span class="co"># ---- Librerias ----</span></span>
+<span id="cb56-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-2" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-3" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb56-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb56-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-5" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-6" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb56-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-7" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-8" tabindex="-1"></a><span class="co"># ---- Curva de acumulación ----</span></span>
+<span id="cb56-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-9" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-10" tabindex="-1"></a>curva <span class="ot">&lt;-</span> <span class="fu">specaccum</span>(abundancia<span class="sc">$</span>localidad)</span>
+<span id="cb56-11"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb56-11" tabindex="-1"></a>curva</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## Species Accumulation Curve
+## Accumulation method: exact
+## Call: specaccum(comm = abundancia$localidad) 
+## 
+##                                                                               
+## Sites     1.000000  2.000000  3.000000  4.000000  5.000000  6.000000  7.000000
+## Richness 30.333333 48.472222 62.059524 73.238095 82.928571 91.619048 99.583333
+## sd        8.743251  9.492551  9.604422  9.332636  8.766846  7.874094  6.490979
+##                        
+## Sites      8.000000   9
+## Richness 107.000000 114
+## sd         4.371626   0</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-1" tabindex="-1"></a>datos_sp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb58-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-2" tabindex="-1"></a>  <span class="at">Sitios =</span> curva<span class="sc">$</span>sites,</span>
+<span id="cb58-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-3" tabindex="-1"></a>  <span class="at">Riqueza =</span> curva<span class="sc">$</span>richness,</span>
+<span id="cb58-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-4" tabindex="-1"></a>  <span class="at">SD =</span> curva<span class="sc">$</span>sd</span>
+<span id="cb58-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-5" tabindex="-1"></a>)</span>
+<span id="cb58-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-6" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-7" tabindex="-1"></a><span class="fu">ggplot</span>(datos_sp, <span class="fu">aes</span>(<span class="at">x =</span> Sitios, <span class="at">y =</span> Riqueza)) <span class="sc">+</span></span>
+<span id="cb58-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-8" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Riqueza <span class="sc">-</span> SD, <span class="at">ymax =</span> Riqueza <span class="sc">+</span> SD), <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span>) <span class="sc">+</span></span>
+<span id="cb58-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-9" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> datos_sp<span class="sc">$</span>Sitios) <span class="sc">+</span></span>
+<span id="cb58-10"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-10" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb58-11"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb58-11" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:carva-acu"></span>
+<img src="_main_files/figure-html/carva-acu-1.png" alt="Curva de acumulación" width="672" />
+<p class="caption">
+Figura 11: Curva de acumulación
+</p>
+</div>
+</div>
+<div id="curvas-de-rarefacción" class="section level2 hasAnchor">
+<h2>Curvas de rarefacción<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-rarefacción" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-1" tabindex="-1"></a><span class="fu">library</span>(iNEXT)</span>
+<span id="cb59-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-2" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-3" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb59-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-4" tabindex="-1"></a><span class="fu">data</span>(incidencia_raw)</span>
+<span id="cb59-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-5" tabindex="-1"></a></span>
+<span id="cb59-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-6" tabindex="-1"></a>inext_abundancia <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(abundancia<span class="sc">$</span>sp_by_ec, <span class="at">q =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">datatype =</span> <span class="st">&quot;abundance&quot;</span>)</span>
+<span id="cb59-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb59-7" tabindex="-1"></a>inext_abundancia</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## Compare 3 assemblages with Hill number order q = 0, 1, 2.
+## $class: iNEXT
+## 
+## $DataInfo: basic data information
+##   Assemblage    n S.obs     SC f1 f2 f3 f4 f5 f6 f7 f8 f9 f10
+## 1        ECB 1877    78 0.9856 27 11  7  2  1  2  1  1  0   0
+## 2        ECI 2309    57 0.9952 11  8  1  4  4  3  1  1  3   0
+## 3        ECD 1177    53 0.9864 16  8  3  2  1  3  0  2  0   0
+## 
+## $iNextEst: diversity estimates with rarefied and extrapolated samples.
+## $size_based (LCL and UCL are obtained for fixed size.)
+## 
+##     Assemblage    m        Method Order.q         qD     qD.LCL      qD.UCL
+## 1          ECB    1   Rarefaction       0  1.0000000  1.0000000   1.0000000
+## 10         ECB  938   Rarefaction       0 60.6672822 56.1608801  65.1736843
+## 20         ECB 1877      Observed       0 78.0000000 70.8378214  85.1621786
+## 30         ECB 2766 Extrapolation       0 88.6065123 78.6412914  98.5717332
+## 40         ECB 3754 Extrapolation       0 96.4601241 82.8316487 110.0885994
+## 41         ECB    1   Rarefaction       1  1.0000000  1.0000000   1.0000000
+## 50         ECB  938   Rarefaction       1 21.1690611 20.0679683  22.2701538
+## 60         ECB 1877      Observed       1 21.7138324 20.5589492  22.8687157
+## 70         ECB 2766 Extrapolation       1 21.9558663 20.7756206  23.1361119
+## 80         ECB 3754 Extrapolation       1 22.1285186 20.9289264  23.3281109
+## 81         ECB    1   Rarefaction       2  1.0000000  1.0000000   1.0000000
+## 90         ECB  938   Rarefaction       2 14.3995503 13.7134380  15.0856627
+## 100        ECB 1877      Observed       2 14.5033077 13.8069569  15.1996585
+## 110        ECB 2766 Extrapolation       2 14.5369379 13.8372525  15.2366234
+## 120        ECB 3754 Extrapolation       2 14.5556931 13.8541445  15.2572417
+## 121        ECI    1   Rarefaction       0  1.0000000  1.0000000   1.0000000
+## 130        ECI 1154   Rarefaction       0 48.9327227 46.3801025  51.4853430
+## 140        ECI 2309      Observed       0 57.0000000 53.1089781  60.8910219
+## 150        ECI 3403 Extrapolation       0 60.7648251 55.3931795  66.1364706
+## 160        ECI 4618 Extrapolation       0 62.7944002 55.6383757  69.9504246
+## 161        ECI    1   Rarefaction       1  1.0000000  1.0000000   1.0000000
+## 170        ECI 1154   Rarefaction       1 13.6001420 12.9357662  14.2645178
+## 180        ECI 2309      Observed       1 13.7968750 13.1235716  14.4701785
+## 190        ECI 3403 Extrapolation       1 13.8759313 13.1996243  14.5522384
+## 200        ECI 4618 Extrapolation       1 13.9290468 13.2510728  14.6070208
+## 201        ECI    1   Rarefaction       2  1.0000000  1.0000000   1.0000000
+## 210        ECI 1154   Rarefaction       2  7.8387886  7.3476698   8.3299074
+## 220        ECI 2309      Observed       2  7.8621150  7.3678740   8.3563560
+## 230        ECI 3403 Extrapolation       2  7.8696370  7.3743871   8.3648868
+## 240        ECI 4618 Extrapolation       2  7.8738202  7.3780088   8.3696315
+## 241        ECD    1   Rarefaction       0  1.0000000  1.0000000   1.0000000
+## 250        ECD  588   Rarefaction       0 42.4057172 38.3115399  46.4998945
+## 260        ECD 1177      Observed       0 53.0000000 47.2879677  58.7120323
+## 270        ECD 1735 Extrapolation       0 59.0376197 51.5169284  66.5583110
+## 280        ECD 2354 Extrapolation       0 63.1078352 52.8373986  73.3782717
+## 281        ECD    1   Rarefaction       1  1.0000000  1.0000000   1.0000000
+## 290        ECD  588   Rarefaction       1 11.9485804 10.9876833  12.9094774
+## 300        ECD 1177      Observed       1 12.2769906 11.2735346  13.2804467
+## 310        ECD 1735 Extrapolation       1 12.4188866 11.3971170  13.4406562
+## 320        ECD 2354 Extrapolation       1 12.5176593 11.4817427  13.5535758
+## 321        ECD    1   Rarefaction       2  1.0000000  1.0000000   1.0000000
+## 330        ECD  588   Rarefaction       2  6.0117327  5.5430775   6.4803878
+## 340        ECD 1177      Observed       2  6.0375284  5.5644343   6.5106224
+## 350        ECD 1735 Extrapolation       2  6.0458576  5.5713257   6.5203894
+## 360        ECD 2354 Extrapolation       2  6.0504874  5.5751554   6.5258193
+##              SC      SC.LCL      SC.UCL
+## 1   0.068453493 0.065098009 0.071808978
+## 10  0.975967440 0.972218828 0.979716053
+## 20  0.985621589 0.981382985 0.989860193
+## 30  0.990226382 0.985318924 0.995133839
+## 40  0.993636009 0.988867065 0.998404953
+## 41  0.068453493 0.065098009 0.071808978
+## 50  0.975967440 0.972218828 0.979716053
+## 60  0.985621589 0.981382985 0.989860193
+## 70  0.990226382 0.985318924 0.995133839
+## 80  0.993636009 0.988867065 0.998404953
+## 81  0.068453493 0.065098009 0.071808978
+## 90  0.975967440 0.972218828 0.979716053
+## 100 0.985621589 0.981382985 0.989860193
+## 110 0.990226382 0.985318924 0.995133839
+## 120 0.993636009 0.988867065 0.998404953
+## 121 0.126814072 0.118693947 0.134934197
+## 130 0.989675741 0.987539562 0.991811920
+## 140 0.995239033 0.993164876 0.997313191
+## 150 0.997610203 0.995442653 0.999777754
+## 160 0.998888475 0.996972256 1.000000000
+## 161 0.126814072 0.118693947 0.134934197
+## 170 0.989675741 0.987539562 0.991811920
+## 180 0.995239033 0.993164876 0.997313191
+## 190 0.997610203 0.995442653 0.999777754
+## 200 0.998888475 0.996972256 1.000000000
+## 201 0.126814072 0.118693947 0.134934197
+## 210 0.989675741 0.987539562 0.991811920
+## 220 0.995239033 0.993164876 0.997313191
+## 230 0.997610203 0.995442653 0.999777754
+## 240 0.998888475 0.996972256 1.000000000
+## 241 0.164921194 0.151896211 0.177946176
+## 250 0.975995410 0.971205714 0.980785105
+## 260 0.986417667 0.981680111 0.991155222
+## 270 0.991547335 0.985554355 0.997540316
+## 280 0.995005462 0.989023353 1.000000000
+## 281 0.164921194 0.151896211 0.177946176
+## 290 0.975995410 0.971205714 0.980785105
+## 300 0.986417667 0.981680111 0.991155222
+## 310 0.991547335 0.985554355 0.997540316
+## 320 0.995005462 0.989023353 1.000000000
+## 321 0.164921194 0.151896211 0.177946176
+## 330 0.975995410 0.971205714 0.980785105
+## 340 0.986417667 0.981680111 0.991155222
+## 350 0.991547335 0.985554355 0.997540316
+## 360 0.995005462 0.989023353 1.000000000
+## 
+## NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$size_based to view complete output.
+## 
+## $coverage_based (LCL and UCL are obtained for fixed coverage; interval length is wider due to varying size in bootstraps.)
+## 
+##     Assemblage          SC    m        Method Order.q         qD      qD.LCL
+## 1          ECB 0.068454056    1   Rarefaction       0  1.0000080  0.97534139
+## 10         ECB 0.975967440  938   Rarefaction       0 60.6672820 52.27052379
+## 20         ECB 0.985621589 1877      Observed       0 78.0000000 62.66090370
+## 30         ECB 0.990226382 2766 Extrapolation       0 88.6065123 66.86730534
+## 40         ECB 0.993636009 3754 Extrapolation       0 96.4601241 69.34736661
+## 41         ECB 0.068454056    1   Rarefaction       1  1.0000078  0.97595881
+## 50         ECB 0.975967440  938   Rarefaction       1 21.1690610 19.98336517
+## 60         ECB 0.985621589 1877      Observed       1 21.7138324 20.50050676
+## 70         ECB 0.990226382 2766 Extrapolation       1 21.9558663 20.71862517
+## 80         ECB 0.993636009 3754 Extrapolation       1 22.1285186 20.87450526
+## 81         ECB 0.068454056    1   Rarefaction       2  1.0000075  0.97686512
+## 90         ECB 0.975967440  938   Rarefaction       2 14.3995503 13.70756959
+## 100        ECB 0.985621589 1877      Observed       2 14.5033077 13.80425118
+## 110        ECB 0.990226382 2766 Extrapolation       2 14.5369379 13.83382610
+## 120        ECB 0.993636009 3754 Extrapolation       2 14.5556931 13.85044524
+## 121        ECI 0.126814072    1   Rarefaction       0  1.0000000  0.96775412
+## 130        ECI 0.989675741 1154   Rarefaction       0 48.9327225 44.95662905
+## 140        ECI 0.995239033 2309      Observed       0 57.0000000 49.72845324
+## 150        ECI 0.997610203 3403 Extrapolation       0 60.7648251 49.42802512
+## 160        ECI 0.998888475 4618 Extrapolation       0 62.7944002 48.63941218
+## 161        ECI 0.126814072    1   Rarefaction       1  1.0000000  0.96922166
+## 170        ECI 0.989675741 1154   Rarefaction       1 13.6001420 12.94743252
+## 180        ECI 0.995239033 2309      Observed       1 13.7968750 13.13253382
+## 190        ECI 0.997610203 3403 Extrapolation       1 13.8759313 13.20768248
+## 200        ECI 0.998888475 4618 Extrapolation       1 13.9290468 13.25566470
+## 201        ECI 0.126814072    1   Rarefaction       2  1.0000000  0.97124301
+## 210        ECI 0.989675741 1154   Rarefaction       2  7.8387886  7.34922332
+## 220        ECI 0.995239033 2309      Observed       2  7.8621150  7.36896877
+## 230        ECI 0.997610203 3403 Extrapolation       2  7.8696370  7.37497399
+## 240        ECI 0.998888475 4618 Extrapolation       2  7.8738202  7.37835581
+## 241        ECD 0.164921194    1   Rarefaction       0  1.0000000  0.95366006
+## 250        ECD 0.975995410  588   Rarefaction       0 42.4057177 35.84197489
+## 260        ECD 0.986417667 1177      Observed       0 53.0000000 42.37855347
+## 270        ECD 0.991547335 1735 Extrapolation       0 59.0376197 36.58033278
+## 280        ECD 0.995005462 2354 Extrapolation       0 63.1078352 31.17786256
+## 281        ECD 0.164921194    1   Rarefaction       1  1.0000000  0.95632715
+## 290        ECD 0.975995410  588   Rarefaction       1 11.9485804 10.94595642
+## 300        ECD 0.986417667 1177      Observed       1 12.2769906 11.24221170
+## 310        ECD 0.991547335 1735 Extrapolation       1 12.4188866 11.34718255
+## 320        ECD 0.995005462 2354 Extrapolation       1 12.5176593 11.43814260
+## 321        ECD 0.164921194    1   Rarefaction       2  1.0000000  0.95986698
+## 330        ECD 0.975995410  588   Rarefaction       2  6.0117327  5.54371872
+## 340        ECD 0.986417667 1177      Observed       2  6.0375284  5.56496505
+## 350        ECD 0.991547335 1735 Extrapolation       2  6.0458576  5.57153645
+## 360        ECD 0.995005462 2354 Extrapolation       2  6.0504874  5.57533009
+##          qD.UCL
+## 1     1.0246747
+## 10   69.0640403
+## 20   93.3390963
+## 30  110.3457193
+## 40  123.5728816
+## 41    1.0240569
+## 50   22.3547569
+## 60   22.9271581
+## 70   23.1931074
+## 80   23.3825320
+## 81    1.0231499
+## 90   15.0915310
+## 100  15.2023642
+## 110  15.2400497
+## 120  15.2609409
+## 121   1.0322459
+## 130  52.9088159
+## 140  64.2715468
+## 150  72.1016250
+## 160  76.9493881
+## 161   1.0307783
+## 170  14.2528514
+## 180  14.4612163
+## 190  14.5441802
+## 200  14.6024290
+## 201   1.0287570
+## 210   8.3283539
+## 220   8.3552612
+## 230   8.3642999
+## 240   8.3692845
+## 241   1.0463399
+## 250  48.9694604
+## 260  63.6214465
+## 270  81.4949067
+## 280  95.0378078
+## 281   1.0436728
+## 290  12.9512043
+## 300  13.3117696
+## 310  13.4905907
+## 320  13.5971759
+## 321   1.0401330
+## 330   6.4797466
+## 340   6.5100917
+## 350   6.5201787
+## 360   6.5256446
+## 
+## NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$coverage_based to view complete output.
+## 
+## $AsyEst: asymptotic diversity estimates along with related statistics.
+##   Assemblage         Diversity   Observed   Estimator        s.e.        LCL
+## 1        ECB  Species richness 78.0000000 111.1187097 18.90562416 78.0000000
+## 2        ECB Shannon diversity 21.7138324  22.4173559  0.66403430 21.1158726
+## 3        ECB Simpson diversity 14.5033077  14.6084583  0.40688587 13.8109766
+## 4        ECD  Species richness 53.0000000  68.9864061 15.53738992 53.0000000
+## 5        ECD Shannon diversity 12.2769906  12.6730023  0.53296051 11.6284189
+## 6        ECD Simpson diversity  6.0375284   6.0635021  0.29097957  5.4931926
+## 7        ECI  Species richness 57.0000000  64.5592248 10.07344392 57.0000000
+## 8        ECI Shannon diversity 13.7968750  14.0048088  0.37622759 13.2674163
+## 9        ECI Simpson diversity  7.8621150   7.8855602  0.24737392  7.4007162
+##           UCL
+## 1 148.1730522
+## 2  23.7188393
+## 3  15.4059399
+## 4  99.4391308
+## 5  13.7175857
+## 6   6.6338115
+## 7  84.3028121
+## 8  14.7422014
+## 9   8.3704042</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb61-1" tabindex="-1"></a>plot_ec <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(inext_abundancia, <span class="at">type =</span> <span class="dv">1</span>, <span class="at">facet.var =</span> <span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
+<span id="cb61-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb61-2" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb61-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb61-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span>
+<span id="cb61-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb61-4" tabindex="-1"></a>plot_ec</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<img src="_main_files/figure-html/unnamed-chunk-22-1.png" alt="Curvas de rarefacción por ensamble (estado de conservación)" width="672" />
+<p class="caption">
+Figura 12: Curvas de rarefacción por ensamble (estado de conservación)
+</p>
+</div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb62-1" tabindex="-1"></a>plot_orderq <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(inext_abundancia, <span class="at">type =</span> <span class="dv">1</span>, <span class="at">facet.var =</span> <span class="st">&quot;Order.q&quot;</span>) <span class="sc">+</span></span>
+<span id="cb62-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb62-2" tabindex="-1"></a>  <span class="fu">theme_classic</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb62-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb62-3" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span>
+<span id="cb62-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb62-4" tabindex="-1"></a>plot_orderq</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="_main_files/figure-html/unnamed-chunk-23-1.png" alt="Curvas de rarefacción por orden q" width="672" />
+<p class="caption">
+Figura 13: Curvas de rarefacción por orden q
+</p>
+</div>
+</div>
+<div id="nmds-escalado-multi-dimensional-no-métrico" class="section level2 hasAnchor">
+<h2>NMDS (Escalado multi-dimensional no métrico)<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#nmds-escalado-multi-dimensional-no-métrico" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-1" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb63-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb63-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-3" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb63-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-4" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb63-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-5" tabindex="-1"></a><span class="fu">library</span>(concaveman)</span>
+<span id="cb63-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-6" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-7" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb63-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-8" tabindex="-1"></a><span class="fu">data</span>(ambiente)</span>
+<span id="cb63-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-9" tabindex="-1"></a></span>
+<span id="cb63-10"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-10" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">19950922</span>)</span>
+<span id="cb63-11"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-11" tabindex="-1"></a></span>
+<span id="cb63-12"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-12" tabindex="-1"></a></span>
+<span id="cb63-13"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb63-13" tabindex="-1"></a>resultado_nmds <span class="ot">&lt;-</span> <span class="fu">metaMDS</span>(abundancia<span class="sc">$</span>localidad, <span class="at">distance =</span> <span class="st">&quot;bray&quot;</span>, <span class="at">K =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## Square root transformation
+## Wisconsin double standardization
+## Run 0 stress 0.15191508 
+## Run 1 stress 0.17360063 
+## Run 2 stress 0.17036563 
+## Run 3 stress 0.18129005 
+## Run 4 stress 0.24797212 
+## Run 5 stress 0.18106207 
+## Run 6 stress 0.2206524 
+## Run 7 stress 0.17668312 
+## Run 8 stress 0.19031998 
+## Run 9 stress 0.22536858 
+## Run 10 stress 0.17036561 
+## Run 11 stress 0.14676403 
+## ... New best solution
+## ... Procrustes: rmse 0.22039157  max resid 0.51097837 
+## Run 12 stress 0.15191508 
+## Run 13 stress 0.25191103 
+## Run 14 stress 0.17036563 
+## Run 15 stress 0.1703656 
+## Run 16 stress 0.17360063 
+## Run 17 stress 0.23389998 
+## Run 18 stress 0.21741609 
+## Run 19 stress 0.17360063 
+## Run 20 stress 0.29294975 
+## *** Best solution was not repeated -- monoMDS stopping criteria:
+##     12: stress ratio &gt; sratmax
+##      8: scale factor of the gradient &lt; sfgrmin</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb65-1" tabindex="-1"></a>resultado_nmds<span class="sc">$</span>stress</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## [1] 0.14676403</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb67-1" tabindex="-1"></a>dist_sitios <span class="ot">&lt;-</span> <span class="fu">vegdist</span>(abundancia<span class="sc">$</span>localidad)</span>
+<span id="cb67-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb67-2" tabindex="-1"></a>anosim_sitios <span class="ot">&lt;-</span> <span class="fu">anosim</span>(dist_sitios, ambiente<span class="sc">$</span>estado_conservacion, <span class="at">distance =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb67-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb67-3" tabindex="-1"></a><span class="fu">summary</span>(anosim_sitios)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## 
+## Call:
+## anosim(x = dist_sitios, grouping = ambiente$estado_conservacion,      distance = &quot;bray&quot;) 
+## Dissimilarity: bray 
+## 
+## ANOSIM statistic R: -0.15226 
+##       Significance: 0.795 
+## 
+## Permutation: free
+## Number of permutations: 999
+## 
+## Upper quantiles of permutations (null model):
+##   90%   95% 97.5%   99% 
+## 0.251 0.342 0.401 0.507 
+## 
+## Dissimilarity ranks between and within classes:
+##         0%  25% 50%  75% 100%  N
+## Between  1  9.5  19 25.5   36 27
+## ECB      7  9.0  11 14.0   17  3
+## ECD     14 24.0  34 34.5   35  3
+## ECI      3 17.0  31 32.0   33  3</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-1" tabindex="-1"></a><span class="co"># Creamos un data.frame con los resultados</span></span>
+<span id="cb69-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-2" tabindex="-1"></a>puntos_nmds <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(resultado_nmds<span class="sc">$</span>points)</span>
+<span id="cb69-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-3" tabindex="-1"></a>puntos_nmds<span class="sc">$</span>CONSERVACION <span class="ot">&lt;-</span> ambiente<span class="sc">$</span>estado_conservacion</span>
+<span id="cb69-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-4" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-5" tabindex="-1"></a><span class="co"># Agregamos siglas para nombres de los sitios y guardamos el valor de stress</span></span>
+<span id="cb69-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-6" tabindex="-1"></a>puntos_nmds<span class="sc">$</span>SITIO <span class="ot">&lt;-</span> <span class="fu">abbreviate</span>(<span class="fu">rownames</span>(abundancia<span class="sc">$</span>localidad))</span>
+<span id="cb69-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-7" tabindex="-1"></a>estres <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Stress = %s&quot;</span>, <span class="fu">round</span>(resultado_nmds<span class="sc">$</span>stress, <span class="dv">2</span>))</span>
+<span id="cb69-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-8" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-9" tabindex="-1"></a><span class="co"># Graficamos</span></span>
+<span id="cb69-10"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-10" tabindex="-1"></a>plot_nmds <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(puntos_nmds, <span class="fu">aes</span>(<span class="at">x =</span> MDS1, <span class="at">y =</span> MDS2)) <span class="sc">+</span></span>
+<span id="cb69-11"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-11" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;NMDS&quot;</span>) <span class="sc">+</span></span>
+<span id="cb69-12"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-12" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> CONSERVACION), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb69-13"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-13" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(</span>
+<span id="cb69-14"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-14" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb69-15"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-15" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">&quot;ECB&quot;</span>, <span class="st">&quot;ECI&quot;</span>, <span class="st">&quot;ECD&quot;</span>),</span>
+<span id="cb69-16"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-16" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Conservado&quot;</span>, <span class="st">&quot;Intermedio&quot;</span>, <span class="st">&quot;Degradado&quot;</span>),</span>
+<span id="cb69-17"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-17" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">17</span>)</span>
+<span id="cb69-18"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-18" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb69-19"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-19" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(</span>
+<span id="cb69-20"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-20" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">group =</span> CONSERVACION, <span class="at">linetype =</span> CONSERVACION),</span>
+<span id="cb69-21"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-21" tabindex="-1"></a>    <span class="at">concavity =</span> <span class="dv">10</span>,</span>
+<span id="cb69-22"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-22" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">0</span>,</span>
+<span id="cb69-23"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-23" tabindex="-1"></a>    <span class="at">expand =</span> <span class="dv">0</span>,</span>
+<span id="cb69-24"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-24" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span></span>
+<span id="cb69-25"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-25" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb69-26"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-26" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;dashed&quot;</span>, <span class="st">&quot;dotted&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb69-27"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-27" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="sc">+</span><span class="cn">Inf</span>, <span class="at">y =</span> <span class="sc">+</span><span class="cn">Inf</span>, <span class="at">label =</span> estres, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb69-28"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-28" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb69-29"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb69-29" tabindex="-1"></a>plot_nmds</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-1" tabindex="-1"></a><span class="co"># Opcionalmente podemos añadir el nombre de los sitios</span></span>
+<span id="cb70-2"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-2" tabindex="-1"></a>plot_nmds <span class="sc">+</span></span>
+<span id="cb70-3"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-3" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb70-4"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-4" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> SITIO),</span>
+<span id="cb70-5"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-5" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.5</span>,</span>
+<span id="cb70-6"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-6" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb70-7"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-7" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb70-8"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#cb70-8" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="capítulo-8-evaluación-de-variables-ambientales.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

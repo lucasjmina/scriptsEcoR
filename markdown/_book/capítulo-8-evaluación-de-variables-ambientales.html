@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 8: Evaluación de variables ambientales | Estadística para estudios ecológicos: Un enfoque práctico utilizando R</title>
+  <meta name="description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 8: Evaluación de variables ambientales | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 8: Evaluación de variables ambientales | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
+  
+  <meta name="twitter:description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
+  
+
+<meta name="author" content="Dario D. Larrea" />
+<meta name="author" content="Lucas J. Mina" />
+<meta name="author" content="Matias I. Dufek" />
+<meta name="author" content="Gerardo N. Valle" />
+<meta name="author" content="Florencia M. Monti Areco" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"/>
+<link rel="next" href="capítulo-9-modelado-nicho-ecológico.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefacio</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><i class="fa fa-check"></i>Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-normalidad-de-shapiro-wilk"><i class="fa fa-check"></i>Prueba de normalidad de Shapiro-Wilk</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-levene"><i class="fa fa-check"></i>Prueba de Levene</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-t-de-student"><i class="fa fa-check"></i>Prueba t de Student</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#anova"><i class="fa fa-check"></i>ANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#regresión-lineal"><i class="fa fa-check"></i>Regresión lineal</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#manova"><i class="fa fa-check"></i>MANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-krustal-wallis"><i class="fa fa-check"></i>Prueba de Krustal-Wallis</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-de-coerrelación-de-spearman"><i class="fa fa-check"></i>Prueba de coerrelación de Spearman</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#prueba-mann-whitney-u"><i class="fa fa-check"></i>Prueba Mann-Whitney U</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#permanova"><i class="fa fa-check"></i>PERMANOVA</a></li>
+<li class="chapter" data-level="" data-path="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html"><a href="capítulo-4-pruebas-de-hipótesis-estadísticas-en-estudios-ecológicos.html#modelo-lineal-generalizado-glm"><i class="fa fa-check"></i>Modelo lineal generalizado GLM</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><i class="fa fa-check"></i>Capítulo 5: Índices para medir la diversidad biológica</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-alfa"><i class="fa fa-check"></i>Diversidad alfa</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#riqueza-de-especies"><i class="fa fa-check"></i>Riqueza de especies</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-dominancia"><i class="fa fa-check"></i>Índices basados en dominancia</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#índices-basados-en-equidad"><i class="fa fa-check"></i>Índices basados en equidad</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#diversidad-beta"><i class="fa fa-check"></i>Diversidad beta</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-jaccard"><i class="fa fa-check"></i>Beta partición en base Jaccard</a></li>
+<li class="chapter" data-level="" data-path="capítulo-5-índices-para-medir-la-diversidad-biológica.html"><a href="capítulo-5-índices-para-medir-la-diversidad-biológica.html#beta-partición-en-base-sørensen"><i class="fa fa-check"></i>Beta partición en base Sørensen</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><i class="fa fa-check"></i>Capítulo 6: Otras formas de medir la biodiversidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-6-otras-formas-de-medir-la-biodiversidad.html"><a href="capítulo-6-otras-formas-de-medir-la-biodiversidad.html#diversidad-taxonómica"><i class="fa fa-check"></i>Diversidad taxonómica</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><i class="fa fa-check"></i>Capítulo 7: Estudio de la estructura de la comunidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-whittaker"><i class="fa fa-check"></i>Curvas de Whittaker</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-acumulación"><i class="fa fa-check"></i>Curvas de acumulación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#curvas-de-rarefacción"><i class="fa fa-check"></i>Curvas de rarefacción</a></li>
+<li class="chapter" data-level="" data-path="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html"><a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html#nmds-escalado-multi-dimensional-no-métrico"><i class="fa fa-check"></i>NMDS (Escalado multi-dimensional no métrico)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html"><i class="fa fa-check"></i>Capítulo 8: Evaluación de variables ambientales</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-regresión"><i class="fa fa-check"></i>Análisis de regresión</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correlación"><i class="fa fa-check"></i>Análisis de correlación</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-componentes-principales-pca"><i class="fa fa-check"></i>Análisis de componentes principales (PCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correspondecia-canónica-cca"><i class="fa fa-check"></i>Análisis de correspondecia canónica (CCA)</a></li>
+<li class="chapter" data-level="" data-path="capítulo-8-evaluación-de-variables-ambientales.html"><a href="capítulo-8-evaluación-de-variables-ambientales.html#test-de-mantel-en-r"><i class="fa fa-check"></i>Test de Mantel en R</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html"><i class="fa fa-check"></i>Capítulo 9: Modelado nicho ecológico</a>
+<ul>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#descarga-de-datos"><i class="fa fa-check"></i>Descarga de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#preparación-de-datos"><i class="fa fa-check"></i>Preparación de datos</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#construcción-de-elipsioides"><i class="fa fa-check"></i>Construcción de elipsioides</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#proyección-del-modelo"><i class="fa fa-check"></i>Proyección del modelo</a></li>
+<li class="chapter" data-level="" data-path="capítulo-9-modelado-nicho-ecológico.html"><a href="capítulo-9-modelado-nicho-ecológico.html#gráficos"><i class="fa fa-check"></i>Gráficos</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Estadística para estudios ecológicos: Un enfoque práctico utilizando R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="capítulo-8-evaluación-de-variables-ambientales" class="section level1 hasAnchor">
+<h1>Capítulo 8: Evaluación de variables ambientales<a href="capítulo-8-evaluación-de-variables-ambientales.html#capítulo-8-evaluación-de-variables-ambientales" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="análisis-de-regresión" class="section level2 hasAnchor">
+<h2>Análisis de regresión<a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-regresión" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb71-1" tabindex="-1"></a><span class="fu">data</span>(moscas)</span>
+<span id="cb71-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb71-2" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb71-3" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(Div_Shan <span class="sc">~</span> IHH, <span class="at">data =</span> moscas)</span>
+<span id="cb71-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb71-4" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## 
+## Call:
+## lm(formula = Div_Shan ~ IHH, data = moscas)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.571036 -0.076726  0.038677  0.108453  0.252099 
+## 
+## Coefficients:
+##               Estimate Std. Error t value             Pr(&gt;|t|)    
+## (Intercept)  1.3213624  0.0842165 15.6901 0.000000000000002109 ***
+## IHH         -0.0064982  0.0020184 -3.2195             0.003241 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.18217 on 28 degrees of freedom
+## Multiple R-squared:  0.27017,    Adjusted R-squared:  0.24411 
+## F-statistic: 10.365 on 1 and 28 DF,  p-value: 0.0032408</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb73-1" tabindex="-1"></a><span class="fu">plot</span>(moscas<span class="sc">$</span>IHH, moscas<span class="sc">$</span>Div_Shan)</span>
+<span id="cb73-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb73-2" tabindex="-1"></a><span class="fu">abline</span>(modelo, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:modelo"></span>
+<img src="_main_files/figure-html/modelo-1.png" alt="Modelo lineal con gráficos base" width="672" />
+<p class="caption">
+Figura 14: Modelo lineal con gráficos base
+</p>
+</div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb74-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-2" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-3" tabindex="-1"></a><span class="fu">ggplot</span>(modelo<span class="sc">$</span>model, <span class="fu">aes</span>(<span class="at">x =</span> IHH, <span class="at">y =</span> Div_Shan)) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-4" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
+<span id="cb74-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-5" tabindex="-1"></a>    <span class="at">stat =</span> <span class="st">&quot;smooth&quot;</span>,</span>
+<span id="cb74-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-6" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb74-7"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-7" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;grey90&quot;</span></span>
+<span id="cb74-8"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb74-9"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-9" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb74-10"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-10" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb74-11"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-11" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb74-12"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-12" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb74-13"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-13" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb74-14"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-14" tabindex="-1"></a>    <span class="at">lineend =</span> <span class="st">&quot;round&quot;</span>,</span>
+<span id="cb74-15"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-15" tabindex="-1"></a>    <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb74-16"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb74-17"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb74-17" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:modelo-ggplot"></span>
+<img src="_main_files/figure-html/modelo-ggplot-1.png" alt="Modelo líneal usando ggplot" width="672" />
+<p class="caption">
+Figura 15: Modelo líneal usando ggplot
+</p>
+</div>
+</div>
+<div id="análisis-de-correlación" class="section level2 hasAnchor">
+<h2>Análisis de correlación<a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correlación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb75-1" tabindex="-1"></a><span class="fu">data</span>(moscas)</span>
+<span id="cb75-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb75-2" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb75-3" tabindex="-1"></a>matriz_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(moscas)</span>
+<span id="cb75-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb75-4" tabindex="-1"></a>matriz_cor</span></code></pre></div>
+<pre style="max-height: 600px;"><code>##                    IHH      Riqueza    Abund_log    Div_Shan
+## IHH        1.000000000 -0.074842989  0.845638906 -0.51978324
+## Riqueza   -0.074842989  1.000000000  0.021460627  0.24598646
+## Abund_log  0.845638906  0.021460627  1.000000000 -0.41283679
+## Div_Shan  -0.519783241  0.245986457 -0.412836788  1.00000000</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb77-1" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb77-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb77-2" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb77-3" tabindex="-1"></a><span class="fu">corrplot</span>(matriz_cor, <span class="at">method =</span> <span class="st">&quot;circle&quot;</span>)</span>
+<span id="cb77-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb77-4" tabindex="-1"></a><span class="fu">corrplot</span>(matriz_cor, <span class="at">method =</span> <span class="st">&quot;color&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-25"></span>
+<img src="_main_files/figure-html/unnamed-chunk-25-1.png" alt="Gráficos prueba de correlación" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-25-2.png" alt="Gráficos prueba de correlación" width="50%" />
+<p class="caption">
+Figura 16: Gráficos prueba de correlación
+</p>
+</div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb78-1" tabindex="-1"></a>resultado_prueba <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(moscas<span class="sc">$</span>IHH, moscas<span class="sc">$</span>Div_Shan)</span>
+<span id="cb78-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb78-2" tabindex="-1"></a>resultado_prueba</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  moscas$IHH and moscas$Div_Shan
+## t = -3.21953, df = 28, p-value = 0.0032408
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.74124543 -0.19626743
+## sample estimates:
+##         cor 
+## -0.51978324</code></pre>
+</div>
+<div id="análisis-de-componentes-principales-pca" class="section level2 hasAnchor">
+<h2>Análisis de componentes principales (PCA)<a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-componentes-principales-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-1" tabindex="-1"></a><span class="fu">data</span>(moscas)</span>
+<span id="cb80-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-2" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-3" tabindex="-1"></a>datos_estandarizados <span class="ot">&lt;-</span> <span class="fu">scale</span>(moscas)</span>
+<span id="cb80-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-4" tabindex="-1"></a></span>
+<span id="cb80-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-5" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(datos_estandarizados, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb80-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb80-6" tabindex="-1"></a><span class="fu">summary</span>(pca)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## Importance of components:
+##                            PC1     PC2     PC3     PC4
+## Standard deviation     1.49205 1.03842 0.74337 0.37799
+## Proportion of Variance 0.55655 0.26958 0.13815 0.03572
+## Cumulative Proportion  0.55655 0.82613 0.96428 1.00000</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb82-1" tabindex="-1"></a><span class="fu">plot</span>(pca)</span></code></pre></div>
+<p><img src="_main_files/figure-html/pca-1.png" width="672" /></p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb83-1" tabindex="-1"></a>datos_proyectados <span class="ot">&lt;-</span> <span class="fu">predict</span>(pca, <span class="at">newdata =</span> datos_estandarizados)</span>
+<span id="cb83-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb83-2" tabindex="-1"></a>datos_proyectados</span></code></pre></div>
+<pre style="max-height: 600px;"><code>##                PC1          PC2          PC3          PC4
+## SL_B1 -2.465815926 -0.082904652 -0.621213906 -0.519693940
+## SL_B2 -1.883548726 -0.092357350 -0.377571613 -0.099020053
+## SL_B3 -1.954558726  0.849625396 -0.064576061 -0.058657066
+## SL_B4 -2.230852812 -0.066628984 -0.563419748 -0.333227738
+## SL_B5 -1.402262235 -1.161632610 -0.275569270  0.056689477
+## SL_G1 -0.685126508 -0.230910722  0.345359120  0.510353557
+## SL_G2 -1.120142369  1.092403509 -0.251211010  0.600009129
+## SL_G3 -1.082375305  0.093368208 -0.461949177  0.487723428
+## SL_G4 -0.974323223  0.978648543  0.034481752  0.612707081
+## SL_G5 -1.651091280 -0.832952801 -1.053272444 -0.010437215
+## SL_U1  2.510094730 -0.487994288 -0.491244605  0.427312590
+## SL_U2  1.667196397  0.338253296 -0.242514144 -0.196687443
+## SL_U3  1.669893249  0.291578565 -0.147327866 -0.233526887
+## SL_U4  1.777633656  0.276265005 -0.074884799 -0.166970059
+## SL_U5  1.392947217  2.220736743  0.335466665 -0.214512197
+## O_B1  -0.212729057 -1.168479085  0.150127838  0.532988704
+## O_B2   0.059969748 -0.483402683  1.113886648  0.612618338
+## O_B3  -0.949735755  0.401246523  1.180480923 -0.085569584
+## O_B4  -0.635782772 -1.128991608 -0.092689358  0.254475746
+## O_B5  -1.300144275  0.859943945  0.120107234  0.038083733
+## O_G1   0.604811631  0.467494491  1.515094317  0.011912870
+## O_G2   0.306275512  0.481078448  1.372551680 -0.196504373
+## O_G3   1.199255739 -2.823814809  1.661880963 -0.215552785
+## O_G4  -0.491892717 -0.233297276  0.265222476 -0.687240020
+## O_G5  -0.701314612 -0.283843249  0.286404900 -0.883414620
+## O_U1   1.357202195  2.402277439 -0.044499890 -0.089813350
+## O_U2   1.514143771  0.600174724 -0.829858687 -0.091463491
+## O_U3   1.704964077 -1.410138755 -1.182175393 -0.241370325
+## O_U4   2.008583826 -0.429073121 -0.803521161  0.107221795
+## O_U5   1.968724551 -0.436672843 -0.803565388  0.071564702</code></pre>
+</div>
+<div id="análisis-de-correspondecia-canónica-cca" class="section level2 hasAnchor">
+<h2>Análisis de correspondecia canónica (CCA)<a href="capítulo-8-evaluación-de-variables-ambientales.html#análisis-de-correspondecia-canónica-cca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-1" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb85-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb85-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-3" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-4" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb85-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-5" tabindex="-1"></a><span class="fu">data</span>(ambiente)</span>
+<span id="cb85-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-6" tabindex="-1"></a></span>
+<span id="cb85-7"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-7" tabindex="-1"></a>resultado_cca <span class="ot">&lt;-</span> <span class="fu">cca</span>(abundancia<span class="sc">$</span>localidad <span class="sc">~</span> ., ambiente)</span>
+<span id="cb85-8"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb85-8" tabindex="-1"></a><span class="fu">summary</span>(resultado_cca)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## 
+## Call:
+## cca(formula = abundancia$localidad ~ estado_conservacion + ihh +      t_min + t_max + t_med + hr_min + hr_max + hr_med + pp_14_dias_antes +      pp_30_dias_antes + dist_al_rio, data = ambiente) 
+## 
+## Partitioning of scaled Chi-square:
+##               Inertia Proportion
+## Total           2.352          1
+## Constrained     2.352          1
+## Unconstrained   0.000          0
+## 
+## Eigenvalues, and their contribution to the scaled Chi-square 
+## 
+## Importance of components:
+##                          CCA1    CCA2    CCA3    CCA4    CCA5     CCA6     CCA7
+## Eigenvalue            0.51124 0.42762 0.36499 0.29458 0.26833 0.217375 0.149886
+## Proportion Explained  0.21736 0.18181 0.15518 0.12525 0.11409 0.092422 0.063727
+## Cumulative Proportion 0.21736 0.39918 0.55436 0.67961 0.79369 0.886116 0.949843
+##                           CCA8
+## Eigenvalue            0.117969
+## Proportion Explained  0.050157
+## Cumulative Proportion 1.000000
+## 
+## Accumulated constrained eigenvalues
+## Importance of components:
+##                          CCA1    CCA2    CCA3    CCA4    CCA5     CCA6     CCA7
+## Eigenvalue            0.51124 0.42762 0.36499 0.29458 0.26833 0.217375 0.149886
+## Proportion Explained  0.21736 0.18181 0.15518 0.12525 0.11409 0.092422 0.063727
+## Cumulative Proportion 0.21736 0.39918 0.55436 0.67961 0.79369 0.886116 0.949843
+##                           CCA8
+## Eigenvalue            0.117969
+## Proportion Explained  0.050157
+## Cumulative Proportion 1.000000</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb87-1" tabindex="-1"></a><span class="fu">anova</span>(resultado_cca)</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## No residual component
+## 
+## Model: cca(formula = abundancia$localidad ~ estado_conservacion + ihh + t_min + t_max + t_med + hr_min + hr_max + hr_med + pp_14_dias_antes + pp_30_dias_antes + dist_al_rio, data = ambiente)
+##          Df ChiSquare F Pr(&gt;F)
+## Model     8   2.35199         
+## Residual  0   0.00000</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb89-1" tabindex="-1"></a>plot_cca <span class="ot">&lt;-</span> <span class="fu">plot</span>(resultado_cca)</span>
+<span id="cb89-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb89-2" tabindex="-1"></a>elipses_plot_cca <span class="ot">&lt;-</span> <span class="fu">ordiellipse</span>(resultado_cca, ambiente<span class="sc">$</span>estado_conservacion)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-1" tabindex="-1"></a><span class="co"># ---- Extracción de datos para graficar ----</span></span>
+<span id="cb90-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-2" tabindex="-1"></a></span>
+<span id="cb90-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-3" tabindex="-1"></a>sitios <span class="ot">&lt;-</span> <span class="fu">sites.long</span>(plot_cca)</span>
+<span id="cb90-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-4" tabindex="-1"></a>especies <span class="ot">&lt;-</span> <span class="fu">species.long</span>(plot_cca)</span>
+<span id="cb90-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-5" tabindex="-1"></a>multiplicador <span class="ot">&lt;-</span> <span class="fu">attr</span>(plot_cca<span class="sc">$</span>biplot, <span class="st">&quot;arrow.mul&quot;</span>)</span>
+<span id="cb90-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-6" tabindex="-1"></a>vectores <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(plot_cca<span class="sc">$</span>biplot <span class="sc">*</span> multiplicador, <span class="fu">row.names</span>(plot_cca<span class="sc">$</span>biplot))</span>
+<span id="cb90-7"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-7" tabindex="-1"></a><span class="fu">colnames</span>(vectores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;axis1&quot;</span>, <span class="st">&quot;axis2&quot;</span>, <span class="st">&quot;labels&quot;</span>)</span>
+<span id="cb90-8"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-8" tabindex="-1"></a>elipses <span class="ot">&lt;-</span> <span class="fu">ordiellipse.long</span>(elipses_plot_cca)</span>
+<span id="cb90-9"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb90-9" tabindex="-1"></a>nombres_ejes <span class="ot">&lt;-</span> <span class="fu">axis.long</span>(resultado_cca)</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-1" tabindex="-1"></a><span class="co"># ---- Gráfico ----</span></span>
+<span id="cb91-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-2" tabindex="-1"></a></span>
+<span id="cb91-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-3" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb91-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-4" tabindex="-1"></a>  <span class="fu">xlab</span>(nombres_ejes[<span class="dv">1</span>, <span class="st">&quot;label&quot;</span>]) <span class="sc">+</span></span>
+<span id="cb91-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-5" tabindex="-1"></a>  <span class="fu">ylab</span>(nombres_ejes[<span class="dv">2</span>, <span class="st">&quot;label&quot;</span>]) <span class="sc">+</span></span>
+<span id="cb91-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb91-7"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-7" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb91-8"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-8" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">c</span>(<span class="dv">0</span>),</span>
+<span id="cb91-9"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-9" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb91-10"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-10" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb91-11"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-11" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.3</span></span>
+<span id="cb91-12"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-13"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-13" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb91-14"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-14" tabindex="-1"></a>    <span class="at">yintercept =</span> <span class="fu">c</span>(<span class="dv">0</span>),</span>
+<span id="cb91-15"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-15" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb91-16"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-16" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span>,</span>
+<span id="cb91-17"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-17" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.3</span></span>
+<span id="cb91-18"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-18" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-19"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-19" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb91-20"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-20" tabindex="-1"></a>    <span class="at">data =</span> especies,</span>
+<span id="cb91-21"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-21" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> axis1, <span class="at">y =</span> axis2),</span>
+<span id="cb91-22"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-22" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span></span>
+<span id="cb91-23"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-23" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-24"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-24" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb91-25"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-25" tabindex="-1"></a>    <span class="at">data =</span> elipses,</span>
+<span id="cb91-26"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-26" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> axis1, <span class="at">y =</span> axis2, <span class="at">group =</span> Grouping, <span class="at">color =</span> Grouping)</span>
+<span id="cb91-27"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-27" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-28"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-28" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb91-29"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-29" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb91-30"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-30" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">&quot;ECB&quot;</span>, <span class="st">&quot;ECI&quot;</span>, <span class="st">&quot;ECD&quot;</span>),</span>
+<span id="cb91-31"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-31" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Conservado&quot;</span>, <span class="st">&quot;Intermedio&quot;</span>, <span class="st">&quot;Deteriorado&quot;</span>),</span>
+<span id="cb91-32"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-32" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb91-33"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-33" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-34"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-34" tabindex="-1"></a>  <span class="fu">geom_segment</span>(</span>
+<span id="cb91-35"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-35" tabindex="-1"></a>    <span class="at">data =</span> vectores,</span>
+<span id="cb91-36"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-36" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">xend =</span> axis1, <span class="at">yend =</span> axis2),</span>
+<span id="cb91-37"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-37" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb91-38"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-38" tabindex="-1"></a>    <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">20</span>, <span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">1.5</span>, <span class="st">&quot;mm&quot;</span>), <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>)</span>
+<span id="cb91-39"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-39" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-40"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-40" tabindex="-1"></a>  <span class="fu">geom_label</span>(</span>
+<span id="cb91-41"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-41" tabindex="-1"></a>    <span class="at">data =</span> vectores,</span>
+<span id="cb91-42"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-42" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> axis1, <span class="at">y =</span> axis2, <span class="at">label =</span> labels, <span class="at">hjust =</span> <span class="st">&quot;outward&quot;</span>, <span class="at">vjust =</span> <span class="st">&quot;outward&quot;</span>),</span>
+<span id="cb91-43"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-43" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb91-44"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-44" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="cn">NA</span>,</span>
+<span id="cb91-45"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-45" tabindex="-1"></a>    <span class="at">label.padding =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>, <span class="st">&quot;lines&quot;</span>),</span>
+<span id="cb91-46"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-46" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb91-47"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-47" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb91-48"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-48" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb91-49"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-49" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb91-50"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb91-50" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+</div>
+<div id="test-de-mantel-en-r" class="section level2 hasAnchor">
+<h2>Test de Mantel en R<a href="capítulo-8-evaluación-de-variables-ambientales.html#test-de-mantel-en-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-1" tabindex="-1"></a><span class="fu">library</span>(BiodiversityR)</span>
+<span id="cb92-2"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-2" tabindex="-1"></a><span class="fu">library</span>(geosphere)</span>
+<span id="cb92-3"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-3" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-4" tabindex="-1"></a><span class="fu">data</span>(abundancia)</span>
+<span id="cb92-5"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-5" tabindex="-1"></a><span class="fu">data</span>(coords)</span>
+<span id="cb92-6"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-6" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-7" tabindex="-1"></a>dist_abundancia <span class="ot">&lt;-</span> <span class="fu">vegdist</span>(abundancia<span class="sc">$</span>localidad, <span class="at">method =</span> <span class="st">&quot;bray&quot;</span>)</span>
+<span id="cb92-8"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-8" tabindex="-1"></a>dist_geografica <span class="ot">&lt;-</span> <span class="fu">as.dist</span>(<span class="fu">distm</span>(coords, <span class="at">fun =</span> distHaversine))</span>
+<span id="cb92-9"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-9" tabindex="-1"></a></span>
+<span id="cb92-10"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-10" tabindex="-1"></a>resultado_mantel <span class="ot">&lt;-</span> <span class="fu">mantel</span>(dist_abundancia, dist_geografica, <span class="at">method =</span> <span class="st">&quot;pearson&quot;</span>, <span class="at">permutations =</span> <span class="dv">9999</span>)</span>
+<span id="cb92-11"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb92-11" tabindex="-1"></a>resultado_mantel</span></code></pre></div>
+<pre style="max-height: 600px;"><code>## 
+## Mantel statistic based on Pearson&#39;s product-moment correlation 
+## 
+## Call:
+## mantel(xdis = dist_abundancia, ydis = dist_geografica, method = &quot;pearson&quot;,      permutations = 9999) 
+## 
+## Mantel statistic r: 0.10093 
+##       Significance: 0.2745 
+## 
+## Upper quantiles of permutations (null model):
+##   90%   95% 97.5%   99% 
+## 0.261 0.365 0.451 0.520 
+## Permutation: free
+## Number of permutations: 9999</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="capítulo-8-evaluación-de-variables-ambientales.html#cb94-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.matrix</span>(dist_geografica), <span class="fu">as.matrix</span>(dist_abundancia))</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:dispersion-mantel"></span>
+<img src="_main_files/figure-html/dispersion-mantel-1.png" alt="Gráfico de dispersión matrices de distancia" width="672" />
+<p class="caption">
+Figura 17: Gráfico de dispersión matrices de distancia
+</p>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="capítulo-7-estudio-de-la-estructura-de-la-comunidad.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="capítulo-9-modelado-nicho-ecológico.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
