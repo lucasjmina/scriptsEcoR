@@ -58,7 +58,6 @@ rsconnect/
 
 # End of https://www.toptal.com/developers/gitignore/api/r
 
-data/*
-!data/base
-plots/
+data/
 output/
+plots/
