@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos | Estadística para estudios ecológicos: Un enfoque práctico utilizando R</title>
   <meta name="description" content="Este documento contiene los ejemplos usados en el libro “Estadística para estudios ecológicos: Un enfoque práctico utilizando R”" />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Capítulo 4: Pruebas de hipótesis estadísticas en estudios ecológicos | Estadística para estudios ecológicos: Un enfoque práctico utilizando R" />
   <meta property="og:type" content="book" />
@@ -59,7 +59,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -69,7 +69,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -327,9 +327,9 @@ Figura 4: Diagrama de barras ANOVA
 ## -0.57104 -0.07673  0.03868  0.10845  0.25210 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value            Pr(&gt;|t|)    
-## (Intercept)  1.321362   0.084217   15.69 0.00000000000000211 ***
-## IHH         -0.006498   0.002018   -3.22             0.00324 ** 
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.321362   0.084217   15.69 2.11e-15 ***
+## IHH         -0.006498   0.002018   -3.22  0.00324 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -456,18 +456,18 @@ Figura 6: Gráfico resultados MANOVA
 ##     data = hormigas)
 ## 
 ## Coefficients: (2 not defined because of singularities)
-##                Estimate Std. Error z value             Pr(&gt;|z|)    
-## (Intercept)     3.21888    0.14142  22.761 &lt; 0.0000000000000002 ***
-## TRATAMIENTOECD -0.47804    0.22860  -2.091              0.03652 *  
-## TRATAMIENTOECI  0.03922    0.19807   0.198              0.84303    
-## BOSQUEESC       0.21511    0.19008   1.132              0.25776    
-## BOSQUEESQ      -0.77319    0.24677  -3.133              0.00173 ** 
-## BOSQUEPAN       0.25489    0.23929   1.065              0.28678    
-## BOSQUEPCI      -0.12260    0.20241  -0.606              0.54471    
-## BOSQUEPCII     -0.10536    0.20548  -0.513              0.60812    
-## BOSQUEPIN      -0.13815    0.26324  -0.525              0.59972    
-## BOSQUERCH            NA         NA      NA                   NA    
-## BOSQUEVED            NA         NA      NA                   NA    
+##                Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)     3.21888    0.14142  22.761  &lt; 2e-16 ***
+## TRATAMIENTOECD -0.47804    0.22860  -2.091  0.03652 *  
+## TRATAMIENTOECI  0.03922    0.19807   0.198  0.84303    
+## BOSQUEESC       0.21511    0.19008   1.132  0.25776    
+## BOSQUEESQ      -0.77319    0.24677  -3.133  0.00173 ** 
+## BOSQUEPAN       0.25489    0.23929   1.065  0.28678    
+## BOSQUEPCI      -0.12260    0.20241  -0.606  0.54471    
+## BOSQUEPCII     -0.10536    0.20548  -0.513  0.60812    
+## BOSQUEPIN      -0.13815    0.26324  -0.525  0.59972    
+## BOSQUERCH            NA         NA      NA       NA    
+## BOSQUEVED            NA         NA      NA       NA    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
